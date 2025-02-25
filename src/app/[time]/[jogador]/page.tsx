@@ -318,9 +318,6 @@ export default function Page() {
                                             .replace('.', ',')}
                                         label3='TOUCHDOWNS'
                                         label4={currentJogador.estatisticas.recepcao.tds_recebidos}
-                                    />
-                                    <Stats
-                                        label1='FUMBLES'
                                         noBorder
                                     />
                                 </div>
@@ -353,9 +350,6 @@ export default function Page() {
                                             : '0'}
                                         label3='TOUCHDOWNS'
                                         label4={currentJogador.estatisticas.retorno.td_retornados}
-                                    />
-                                    <Stats
-                                        label1='FUMBLES'
                                         noBorder
                                     />
                                 </div>
