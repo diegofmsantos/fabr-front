@@ -63727,73 +63727,6 @@ export const Times: Time[] = [
                 }
             },
             {
-                id: 1203,
-                nome: "Thiago Raposo",
-                timeFormador: "Vasco Almirantes",
-                timeId: 21,
-                posicao: "RB",
-                setor: 'Ataque',
-                experiencia: 0,
-                numero: 30,
-                idade: 0,
-                altura: 0,
-                peso: 0,
-                instagram: '',
-                instagram2: '',
-                cidade: "Rio de Janeiro/RJ",
-                nacionalidade: "brasil.png",
-                camisa: "camisa-vasco-almirantes-30.png",
-                estatisticas: {
-                    passe: {
-                        passes_completos: 0,
-                        passes_tentados: 0,
-                        jardas_de_passe: 0,
-                        td_passados: 0,
-                        interceptacoes_sofridas: 0,
-                        sacks_sofridos: 0,
-                        fumble_de_passador: 0
-                    },
-                    corrida: {
-                        corridas: 0,
-                        jardas_corridas: 0,
-                        tds_corridos: 0,
-                        fumble_de_corredor: 0
-                    },
-                    recepcao: {
-                        recepcoes: 0,
-                        alvo: 0,
-                        jardas_recebidas: 0,
-                        tds_recebidos: 0,
-                    },
-                    retorno: {
-                        retornos: 0,
-                        jardas_retornadas: 0,
-                        td_retornados: 0,
-                    },
-                    defesa: {
-                        tackles_totais: 0,
-                        tackles_for_loss: 0,
-                        sacks_forcado: 0,
-                        fumble_forcado: 0,
-                        interceptacao_forcada: 0,
-                        passe_desviado: 0,
-                        safety: 0,
-                        td_defensivo: 0
-                    },
-                    kicker: {
-                        xp_bons: 0,
-                        tentativas_de_xp: 0,
-                        fg_bons: 0,
-                        tentativas_de_fg: 0,
-                        fg_mais_longo: 0,
-                    },
-                    punter: {
-                        punts: 0,
-                        jardas_de_punt: 0,
-                    }
-                }
-            },
-            {
                 id: 1204,
                 nome: "Teilor Lima",
                 timeFormador: "Mesquita titans",
@@ -64376,73 +64309,6 @@ export const Times: Time[] = [
                     defesa: {
                         tackles_totais: 0,
                         tackles_for_loss: 1,
-                        sacks_forcado: 0,
-                        fumble_forcado: 0,
-                        interceptacao_forcada: 0,
-                        passe_desviado: 0,
-                        safety: 0,
-                        td_defensivo: 0
-                    },
-                    kicker: {
-                        xp_bons: 0,
-                        tentativas_de_xp: 0,
-                        fg_bons: 0,
-                        tentativas_de_fg: 0,
-                        fg_mais_longo: 0,
-                    },
-                    punter: {
-                        punts: 0,
-                        jardas_de_punt: 0,
-                    }
-                }
-            },
-            {
-                id: 1213,
-                nome: "Hiago Goulart",
-                timeFormador: "Vasco Almirantes",
-                timeId: 21,
-                posicao: "DL",
-                setor: 'Defesa',
-                experiencia: 0,
-                numero: 49,
-                idade: 0,
-                altura: 0,
-                peso: 0,
-                instagram: '',
-                instagram2: '',
-                cidade: "Rio de Janeiro/RJ",
-                nacionalidade: "brasil.png",
-                camisa: "camisa-vasco-almirantes-49.png",
-                estatisticas: {
-                    passe: {
-                        passes_completos: 0,
-                        passes_tentados: 0,
-                        jardas_de_passe: 0,
-                        td_passados: 0,
-                        interceptacoes_sofridas: 0,
-                        sacks_sofridos: 0,
-                        fumble_de_passador: 0
-                    },
-                    corrida: {
-                        corridas: 0,
-                        jardas_corridas: 0,
-                        tds_corridos: 0,
-                        fumble_de_corredor: 0
-                    },
-                    recepcao: {
-                        recepcoes: 0,
-                        alvo: 0,
-                        jardas_recebidas: 0,
-                        tds_recebidos: 0,
-                    },
-                    retorno: {
-                        retornos: 0,
-                        jardas_retornadas: 0,
-                        td_retornados: 0,
-                    },
-                    defesa: {
-                        tackles_totais: 0,
-                        tackles_for_loss: 0,
                         sacks_forcado: 0,
                         fumble_forcado: 0,
                         interceptacao_forcada: 0,
@@ -103656,12 +103522,13 @@ export const Times: Time[] = [
                 estaduais: "3 (2012, 2013 e 2015)"
             }
         ],
-        estadio: '',
-        presidente: '',
-        head_coach: '',
-        instagram_coach: '',
-        coord_ofen: '',
-        coord_defen: '', jogadores: [
+        estadio: 'Campo do Tupy',
+        presidente: 'Alexandre Porto',
+        head_coach: 'Breno Ribeiro',
+        instagram_coach: 'http://www.instagram.com/brenodk5/',
+        coord_ofen: 'Breno Ribeiro',
+        coord_defen: 'Guilherme Rocha', 
+        jogadores: [
             {
                 id: 1,
                 nome: "Irwing Vieira",
@@ -103731,74 +103598,6 @@ export const Times: Time[] = [
                 }
             },
             {
-                id: 2,
-                nome: "Rafael Fadini",
-                timeFormador: "",
-                timeId: 33,
-                posicao: "RB",
-                setor: 'Ataque',
-                experiencia: 0,
-                numero: 4,
-                idade: 0,
-                altura: 0.00,
-                peso: 0,
-                instagram: '-',
-                instagram2: '-',
-                cidade: "-",
-                nacionalidade: "brasil.png",
-                camisa: "camisa-tritoes-fa-4.png",
-                estatisticas: {
-                    passe: {
-                        passes_completos: 0,
-                        passes_tentados: 0,
-                        jardas_de_passe: 0,
-                        td_passados: 0,
-                        interceptacoes_sofridas: 0,
-                        sacks_sofridos: 0,
-                        fumble_de_passador: 0
-                    },
-                    corrida: {
-                        corridas: 0,
-                        jardas_corridas: 0,
-                        tds_corridos: 0,
-                        fumble_de_corredor: 0
-                    },
-                    recepcao: {
-                        recepcoes: 0,
-                        alvo: 0,
-                        jardas_recebidas: 0,
-                        tds_recebidos: 0,
-                    },
-                    retorno: {
-                        retornos: 0,
-                        jardas_retornadas: 0,
-                        td_retornados: 0,
-                    },
-                    defesa: {
-                        tackles_totais: 0,
-                        tackles_for_loss: 0,
-                        sacks_forcado: 0,
-                        fumble_forcado: 0,
-                        interceptacao_forcada: 0,
-                        passe_desviado: 0,
-                        safety: 0,
-                        td_defensivo: 0
-                    },
-                    kicker: {
-                        xp_bons: 0,
-                        tentativas_de_xp: 0,
-                        fg_bons: 0,
-                        tentativas_de_fg: 0,
-                        fg_mais_longo: 0,
-
-                    },
-                    punter: {
-                        punts: 0,
-                        jardas_de_punt: 0,
-                    }
-                }
-            },
-            {
                 id: 3,
                 nome: "Yago Martins",
                 timeFormador: "Aimorés",
@@ -103815,74 +103614,6 @@ export const Times: Time[] = [
                 cidade: "Vitória/ES",
                 nacionalidade: "brasil.png",
                 camisa: "camisa-tritoes-fa-5.png",
-                estatisticas: {
-                    passe: {
-                        passes_completos: 0,
-                        passes_tentados: 0,
-                        jardas_de_passe: 0,
-                        td_passados: 0,
-                        interceptacoes_sofridas: 0,
-                        sacks_sofridos: 0,
-                        fumble_de_passador: 0
-                    },
-                    corrida: {
-                        corridas: 0,
-                        jardas_corridas: 0,
-                        tds_corridos: 0,
-                        fumble_de_corredor: 0
-                    },
-                    recepcao: {
-                        recepcoes: 0,
-                        alvo: 0,
-                        jardas_recebidas: 0,
-                        tds_recebidos: 0,
-                    },
-                    retorno: {
-                        retornos: 0,
-                        jardas_retornadas: 0,
-                        td_retornados: 0,
-                    },
-                    defesa: {
-                        tackles_totais: 0,
-                        tackles_for_loss: 0,
-                        sacks_forcado: 0,
-                        fumble_forcado: 0,
-                        interceptacao_forcada: 0,
-                        passe_desviado: 0,
-                        safety: 0,
-                        td_defensivo: 0
-                    },
-                    kicker: {
-                        xp_bons: 0,
-                        tentativas_de_xp: 0,
-                        fg_bons: 0,
-                        tentativas_de_fg: 0,
-                        fg_mais_longo: 0,
-
-                    },
-                    punter: {
-                        punts: 0,
-                        jardas_de_punt: 0,
-                    }
-                }
-            },
-            {
-                id: 4,
-                nome: "Eloan Iury",
-                timeFormador: "",
-                timeId: 33,
-                posicao: "WR",
-                setor: 'Ataque',
-                experiencia: 0,
-                numero: 6,
-                idade: 0,
-                altura: 0.00,
-                peso: 0,
-                instagram: '-',
-                instagram2: '-',
-                cidade: "-",
-                nacionalidade: "brasil.png",
-                camisa: "camisa-tritoes-fa-6.png",
                 estatisticas: {
                     passe: {
                         passes_completos: 0,
