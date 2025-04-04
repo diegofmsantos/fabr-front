@@ -31170,7 +31170,7 @@ export const Times: Time[] = [
         fundacao: "09/04/2015",
         instagram: 'https://www.instagram.com/manausfa/',
         instagram2: '@manausfa',
-        logo: "manaus.png",
+        logo: "manaus-fa.png",
         capacete: 'capacete-manaus.png',
         titulos: [
             {
