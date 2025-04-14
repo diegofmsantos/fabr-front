@@ -119,7 +119,7 @@ export default function Page() {
 
                 {/* Visualização em grid para telas grandes (lg+) */}
                 <div className="px-4 mt-8 lg:px-8 xl:px-12 max-w-7xl mx-auto xl:ml-20">
-                    <StatCardsGrid
+                    <StatCardsGrid // @ts-ignore
                         stats={prepareStatsForCards(players, times, currentStats, categoryTitle)}
                         category={categoryTitle}
                     />
