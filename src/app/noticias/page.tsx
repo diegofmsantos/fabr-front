@@ -7,14 +7,14 @@ import { useNoticias } from '@/hooks/queries'
 
 function createSlug(text: string): string {
     return text
-      .toLowerCase()
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .replace(/[^\w\s-]/g, '')
-      .replace(/\s+/g, '-')
-      .replace(/--+/g, '-')
-      .trim()
-  }
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^\w\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/--+/g, '-')
+        .trim()
+}
 
 export default function NoticiasPage() {
     const {
@@ -31,14 +31,15 @@ export default function NoticiasPage() {
     }
 
     return (
-        <div className="bg-[#ECECEC] min-h-screen pb-20 pt-4">
-            <h1 className="text-[40px] bg-[#ECECEC] fixed mt-16 z-50 ml-2 text-black max-w-7xl p-4 px-2 font-extrabold italic leading-[55px] tracking-[-5px] uppercase xl:ml-20 2xl:ml-80">
+        <div className="bg-[#ECECEC] min-h-screen pb-20 pt-4 lg:pt-6 max-w-[900px] mx-auto xl:mr-44 2xl:mr-80 xl:pt-0">
+            <h1 className="w-full text-[40px] bg-[#ECECEC] fixed mt-16 z-50 text-black max-w-7xl p-4 px-2 font-extrabold italic leading-[55px] tracking-[-5px] 
+            uppercase lg:static lg:mt-16 lg:flex lg:justify-center">
                 Últimas Notícias
             </h1>
-            <div className="container mx-auto max-w-7xl px-4 mt-40 mb-10">
+            <div className="mx-auto max-w-7xl px-4 mt-40 lg:mt-4 mb-10">
                 <div className="grid grid-cols-1 gap-6">
                     {noticias.map((noticia) => (
-                       <Link href={`/noticias/${noticia.id}/${createSlug(noticia.titulo)}`} key={noticia.id}>
+                        <Link href={`/noticias/${noticia.id}/${createSlug(noticia.titulo)}`} key={noticia.id}>
                             <div className="rounded-lg overflow-hidden shadow-lg bg-white flex flex-col md:flex-row md:h-60">
                                 <div className="relative w-full md:w-2/5 h-48 md:h-full">
                                     <Image

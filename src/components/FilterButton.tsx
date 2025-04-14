@@ -12,9 +12,10 @@ export const FilterButton: React.FC<FilterButtonProps> = ({ isSelected,  onClick
     return (
         <button
             onClick={onClick}
-            className={`relative w-full h-12 flex justify-center shadow items-center p-4 rounded-b-3xl transition-colors ${isSelected ? 'bg-[#63E300]' : 'bg-[#A2A3A1] text-gray-600'}`}
+            className={`px-1 font-extrabold italic text-xl leading-[30px] tracking-[-2px]  cursor-pointer  transition-all duration-500
+                ${isSelected ? 'border-b-4 scale-110 border-b-[#63E300]' : 'border-b-4 border-transparent scale-100 opacity-65'}`}
         >
-            <span className="text-[28px] font-extrabold italic uppercase tracking-[-3px]">{label}</span>
+            <span className="text-[28px] font-extrabold italic uppercase tracking-[-3px] md:text-4xl xl:text-5xl">{label}</span>
         </button>
     )
 }
@@ -34,11 +35,11 @@ export const RankingFilters: React.FC<RankingFiltersProps> = ({ currentFilter, o
     const timesUrl = isStatsPage ? `/ranking/times/stats?stat=${statParam}` : "/ranking/times";
 
     return (
-        <div className="flex justify-center items-center">
-            <Link href={jogadoresUrl} className='flex-1'>
+        <div className="w-full flex justify-around mt-4 xl:mt-6">
+            <Link href={jogadoresUrl} className=''>
                 <FilterButton isSelected={currentFilter === 'jogadores'} onClick={() => onFilterChange('jogadores')} label="Jogadores" />
             </Link>
-            <Link href={timesUrl} className='flex-1'>
+            <Link href={timesUrl} className=''>
                 <FilterButton isSelected={currentFilter === 'times'} onClick={() => onFilterChange('times')} label="Times" />
             </Link>
         </div>

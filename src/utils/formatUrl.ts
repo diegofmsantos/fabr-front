@@ -69,14 +69,16 @@ export const findPlayerBySlug = (
     jogadores: Jogador[],
     playerSlug: string,
     timeSlug: string,
-    times: Time[]  // Adicionando times como parâmetro
+    times: Time[]
 ): Jogador | null => {
-    if (!playerSlug || !timeSlug) return null
+    if (!playerSlug || !timeSlug) return null;
 
-    const normalizedPlayerSlug = createSlug(playerSlug)
-    const normalizedTeamSlug = createSlug(timeSlug)
+    const normalizedPlayerSlug = createSlug(playerSlug);
+    const normalizedTeamSlug = createSlug(timeSlug);
 
-    return jogadores.find(jogador => {
+    // Primeiro, tenta encontrar o jogador exatamente como antes
+    // (mesmo nome de jogador e mesmo time)
+    const jogadorNoTimeAtual = jogadores.find(jogador => {
         // Verifica se o nome do jogador corresponde
         const playerMatches = getPlayerSlug(jogador.nome) === normalizedPlayerSlug;
 
@@ -85,6 +87,16 @@ export const findPlayerBySlug = (
         const teamMatches = playerTeam && getTeamSlug(playerTeam.nome) === normalizedTeamSlug;
 
         // Retorna verdadeiro apenas se tanto o jogador quanto o time corresponderem
-        return playerMatches && teamMatches
-    }) || null
+        return playerMatches && teamMatches;
+    });
+
+    if (jogadorNoTimeAtual) {
+        return jogadorNoTimeAtual;
+    }
+
+    // Se não encontrou o jogador no time atual, procura apenas pelo slug do jogador
+    // (isso encontrará o jogador mesmo que ele tenha mudado de time)
+    return jogadores.find(jogador => 
+        getPlayerSlug(jogador.nome) === normalizedPlayerSlug
+    ) || null;
 }

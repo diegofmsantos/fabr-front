@@ -71,14 +71,14 @@ export default function NoticiaDetalhes() {
 
 
   return (
-    <div className="bg-[#ECECEC] min-h-screen pb-16 pt-[83px]">
+    <div className="bg-[#ECECEC] min-h-screen pb-16 pt-[83px] max-w-[800px] mx-auto xl:mr-44 2xl:mr-96">
       <Link
         href={`/noticias`}
-        className='fixed top-8 left-5 rounded-full text-xs text-white p-2 w-8 h-8 flex justify-center items-center bg-gray-200/20 z-50 xl:left-32 2xl:left-[500px]'
+        className='fixed top-8 left-5 rounded-full text-xs text-[#63E300] p-2 w-8 h-8 flex justify-center items-center bg-gray-400/40 z-50 xl:left-96 '
       >
         <FontAwesomeIcon icon={faAngleLeft} />
       </Link>
-      <div className="max-w-4xl mx-auto p-4 bg-white">
+      <div className="max-w-4xl mx-auto p-4 mr-1 bg-white">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-3xl font-bold mb-4">{noticia.titulo}</h1>
           <h2 className="text-[18px] text-gray-400 mb-6">{noticia.subtitulo}</h2>

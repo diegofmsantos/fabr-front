@@ -67,7 +67,7 @@ function TeamStatsContent() {
 
     return (
         <Suspense fallback={<Loading />}>
-            <div className="">
+            <div>
                 <TeamStatSelect currentStat={statParam} />
                 <TeamStatsList
                     players={players}
@@ -87,7 +87,7 @@ export default function TeamStatsPage() {
     return (
         <Suspense fallback={<Loading />}>
             <StatsLayout initialFilter="times" statType={statParam}>
-                <div className="bg-[#ECECEC] min-h-screen pt-7 pb-4 px-2">
+                <div className="bg-[#ECECEC] min-h-screen pt-7 pb-14 px-2 lg:max-w-[800px] lg:min-w-[800px] lg:m-auto">
                     <TeamStatsContent />
                 </div>
             </StatsLayout>

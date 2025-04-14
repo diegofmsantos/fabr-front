@@ -105,7 +105,7 @@ const StatsPage: React.FC = () => {
     <StatsLayout initialFilter="jogadores" statType={statParam}>
       {/* Conteúdo existente da página */}
 
-      <div className="bg-[#ECECEC] min-h-screen pt-8 pb-14 px-2">
+      <div className="bg-[#ECECEC] min-h-screen pt-8 pb-14 px-2 lg:max-w-[800px] lg:min-w-[800px] lg:m-auto">
         <div className="">
           <PlayerStatSelect currentStat={statParam} />
 

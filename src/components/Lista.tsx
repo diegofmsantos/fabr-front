@@ -5,6 +5,7 @@ import Link from "next/link"
 import { motion } from "framer-motion"
 import { useEffect, useState } from "react"
 import { useTimes } from '@/hooks/queries'
+import { Loading } from "./ui/Loading"
 
 export const Lista = () => {
     const [lastClicked, setLastClicked] = useState<string | null>(null)
@@ -28,14 +29,14 @@ export const Lista = () => {
     }
 
     // Adicione estados de loading e error
-    if (isLoading) return <div className="text-center text-gray-500">Carregando times...</div>
-    if (error) return <div className="text-center text-gray-500">Erro ao carregar times.</div>
-    if (!times || times.length === 0) return <div className="text-center text-gray-500">Nenhum time encontrado.</div>
+    if (isLoading) return <div className="text-center text-gray-500 pt-56 lg:pt-32"><Loading /></div>
+    if (error) return <div className="text-center text-gray-500 pt-56 lg:pt-32">Erro ao carregar times.</div>
+    if (!times || times.length === 0) return <div className="text-center text-gray-500 pt-56 lg:pt-32">Nenhum time encontrado.</div>
 
     return (
         <motion.div
-            className="grid grid-cols-3 gap-4 px-3 pt-56 pb-20 container bg-[#ECECEC] relative 
-            min-[400px]:grid-cols-4 md:grid-cols-5 md:pt-48 md:gap-5 lg:px-20 xl:mx-auto lg:grid-cols-6 xl:grid-cols-8"
+            className="max-w-[800px] grid grid-cols-3 gap-4 px-3 pt-56 pb-20 container bg-[#ECECEC] relative 
+            min-[400px]:grid-cols-4 md:grid-cols-5 md:pt-48 md:gap-5 lg:ml-32 xl:pt-32 xl:ml-64 2xl:ml-96"
             initial="hidden"
             animate="visible"
             variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
@@ -60,7 +61,7 @@ export const Lista = () => {
                                     }`}
                                 style={{ backgroundColor: item.cor ?? "#000" }}
                             ></div>
-                            <div className="relative text-center font-extrabold italic z-10 min-[320px]:text-[28px] min-[400px]:text-[31px] md:text-[45px]">
+                            <div className="relative text-center font-extrabold italic z-10 min-[320px]:text-[28px] min-[400px]:text-[31px] md:text-[40px] xl:text-[45px]">
                                 <div className="tracking-[-3px]">{item.sigla ?? "N/A"}</div>
                                 <div className="flex flex-col -mt-4 justify-center items-center gap-2 min-h-28 p-2 min-[400px]:-mt-5">
                                     <Image

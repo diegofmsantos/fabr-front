@@ -63,7 +63,7 @@ const StatsTier: React.FC<StatsTierProps> = ({ title, players, backgroundColor =
     <div className="mb-8 max-w-[1200px] mx-auto">
       <Link
         href={"/ranking"}
-        className='fixed top-8 left-5 rounded-full text-xs text-white p-2 w-8 h-8 flex justify-center items-center bg-gray-200/20 z-50 xl:left-32 2xl:left-[500px]'>
+        className='fixed top-8 left-5 rounded-full text-xs text-[#63E300] p-2 w-8 h-8 flex justify-center items-center bg-gray-400/40 z-50 xl:left-96 2xl:left-[500px]'>
         <FontAwesomeIcon icon={faAngleLeft} />
       </Link>
       <div className={`inline-block text-sm font-bold mb-2 ${backgroundColor} text-white p-2 rounded-xl`}>

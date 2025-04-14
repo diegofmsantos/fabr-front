@@ -8,10 +8,11 @@ const api = axios.create({
 })
 
 // Cache para armazenar dados pré-carregados
-let cachedData: {
-  times: Time[] | null
-  jogadores: Jogador[] | null
-  noticias: Noticia[] | null
+let cachedData: { 
+  times: Time[] | null; 
+  jogadores: Jogador[] | null; 
+  noticias: Noticia[] | null;
+  [key: string]: Time[] | Jogador[] | Noticia[] | null | undefined;
 } = {
   times: null,
   jogadores: null,
@@ -19,11 +20,11 @@ let cachedData: {
 }
 
 // Função para carregar os dados no cache
-export const prefetchData = async (): Promise<void> => {
+export const prefetchData = async (temporada: string = '2024'): Promise<void> => {
   try {
     const [timesResponse, jogadoresResponse, noticiasResponse] = await Promise.all([
-      api.get<Time[]>('/times'),
-      api.get<Jogador[]>('/jogadores'),
+      api.get<Time[]>(`/times?temporada=${temporada}`),
+      api.get<Jogador[]>(`/jogadores?temporada=${temporada}`),
       api.get<Noticia[]>('/noticias'),
     ])
 
@@ -38,15 +39,17 @@ export const prefetchData = async (): Promise<void> => {
 }
 
 // Função para buscar times (usando cache)
-export const getTimes = async (): Promise<Time[]> => {
-  if (cachedData.times) {
-    return cachedData.times
+export const getTimes = async (temporada: string = '2024'): Promise<Time[]> => {
+  const cacheKey = `times_${temporada}`
+
+  if (cachedData[cacheKey]) {
+    return cachedData[cacheKey] as Time[]
   }
 
   try {
-    const response: AxiosResponse<Time[]> = await api.get('/times')
-    cachedData.times = response.data || []
-    return cachedData.times
+    const response: AxiosResponse<Time[]> = await api.get(`/times?temporada=${temporada}`)
+    cachedData[cacheKey] = response.data || []
+    return cachedData[cacheKey] as Time[]
   } catch (error) {
     console.error('Erro ao buscar times:', error)
     throw new Error('Falha ao buscar times')
@@ -54,33 +57,22 @@ export const getTimes = async (): Promise<Time[]> => {
 }
 
 // Função para buscar jogadores (usando cache)
-export const getJogadores = async (): Promise<Jogador[]> => {
-  if (cachedData.jogadores) {
-    return cachedData.jogadores
+export const getJogadores = async (temporada: string = '2024'): Promise<Jogador[]> => {
+  const cacheKey = `jogadores_${temporada}`
+
+  if (cachedData[cacheKey]) {
+    console.log('Retornando jogadores do cache, quantidade:', cachedData[cacheKey]?.length);
+    return cachedData[cacheKey] as Jogador[]
   }
 
   try {
-    const response: AxiosResponse<Jogador[]> = await api.get('/jogadores')
-    cachedData.jogadores = response.data || []
-    return cachedData.jogadores
+    console.log('Buscando jogadores da API para temporada:', temporada);
+    const response: AxiosResponse<Jogador[]> = await api.get(`/jogadores?temporada=${temporada}`)
+    console.log('Jogadores recebidos da API, quantidade:', response.data?.length);
+    cachedData[cacheKey] = response.data || []
+    return cachedData[cacheKey] as Jogador[]
   } catch (error) {
     console.error('Erro ao buscar jogadores:', error)
     throw new Error('Falha ao buscar jogadores')
-  }
-}
-
-// Função para buscar notícias (usando cache)
-export const getNoticias = async (): Promise<Noticia[]> => {
-  if (cachedData.noticias) {
-    return cachedData.noticias
-  }
-
-  try {
-    const response: AxiosResponse<Noticia[]> = await api.get('/materias')
-    cachedData.noticias = response.data || []
-    return cachedData.noticias
-  } catch (error) {
-    console.error('Erro ao buscar notícias:', error)
-    throw new Error('Falha ao buscar notícias')
   }
 }

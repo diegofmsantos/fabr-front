@@ -7,7 +7,11 @@ import { useState } from "react"
 import { Menu } from "lucide-react"
 import { Sobre } from "./Sobre"
 
-export const Tab = () => {
+interface TabProps {
+  className?: string;
+}
+
+export const Tab: React.FC<TabProps> = ({ className = '' }) => {
   const pathname = usePathname()
   const isRankingRoute = pathname.startsWith('/ranking')
   const isNoticiasRoute = pathname.startsWith('/noticias')
@@ -15,7 +19,7 @@ export const Tab = () => {
 
   return (
     <>
-      <div className="fixed bottom-0 w-full bg-[#272731] shadow-md border-t flex justify-around items-center py-2 z-50">
+      <div className={`fixed bottom-0 w-full bg-[#272731] shadow-md border-t flex justify-around items-center py-2 z-50 ${className} xl:hidden`}>
         <Link href="/">
           <div className={`flex flex-col items-center ${!isRankingRoute && !isNoticiasRoute ? "text-[#63E300]" : "text-gray-400"}`}>
             <Image
