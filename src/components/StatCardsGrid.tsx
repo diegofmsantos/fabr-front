@@ -20,6 +20,7 @@ interface PlayerCardProps {
 interface StatCardProps {
   title: string;
   category: string;
+  key: string
   players: PlayerCardProps[];
 }
 
@@ -78,20 +79,22 @@ export const prepareStatsForCards = (
     return {
       title: stat.title,
       category: categoryTitle,
+      key: stat.key,
       players: formattedPlayers
     };
   });
 };
 
 // The StatCardsGrid component
-export const StatCardsGrid: React.FC<StatCardsGridProps> = ({ stats }) => {
+export const StatCardsGrid: React.FC<StatCardsGridProps> = ({ stats, category, }) => {
   return (
     <div className="hidden lg:grid grid-cols-2 gap-6">
       {stats.map((stat, index) => (
         <div key={index}>
           <RankingCard
             title={stat.title}
-            category={stat.category}
+            category={category}
+            stat={stat.key}
             players={stat.players}
           />
         </div>

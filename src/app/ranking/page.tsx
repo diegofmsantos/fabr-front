@@ -102,9 +102,6 @@ export default function Page() {
         });
     };
 
-    // Na página, verifique se a estrutura de dados está correta
-    console.log("Stats preparados:", prepareStatsForCards(players, times, currentStats, categoryTitle));
-
 
     return (
         <RankingLayout initialFilter="jogadores">

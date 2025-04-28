@@ -6,8 +6,10 @@ import { getTimes } from '@/api/api'
 import { RankingCard } from './RankingCard'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
-import { calculateStat, compareValues, shouldIncludePlayer } from '@/utils/statMappings'
+import { calculateStat, compareValues, getStatMapping, shouldIncludePlayer } from '@/utils/statMappings'
 import { NoStats } from '../ui/NoStats'
+import { useTeamInfo } from '@/hooks/useTeamInfo'
+import { usePlayerProcessing } from '@/hooks/usePlayerProcessing'
 
 type StatisticKey =
   | keyof Jogador['estatisticas']['passe']
@@ -111,21 +113,26 @@ export const RankingGroup: React.FC<RankingGroupProps> = ({ title, stats, player
       .replace(/[\u0300-\u036f]/g, '')
       .replace(/[^a-z0-9-]/g, '')
 
+      const getTeamInfoHook = useTeamInfo(times)
+
   return (
     <div className="mb-6 pl-4 py-8 overflow-x-hidden overflow-y-hidden mx-auto xl:px-12 xl:overflow-x xl:overflow-y">
       <h2 className="text-4xl pl-2 font-extrabold italic mb-4 leading-[30px] tracking-[-2px] lg:pl-16 xl:pl-20">{title}</h2>
       <Slider {...SLIDER_SETTINGS}>
         {stats.map((stat, index) => {
-          const filteredPlayers = players
-            .filter(player => shouldIncludePlayer(player, stat.key, title))
-            .sort((a, b) => {
-              const aValue = calculateStat(a, stat.key);
-              const bValue = calculateStat(b, stat.key);
-              return compareValues(aValue, bValue);
-            })
-            .slice(0, 5)
+          // Obter o mapeamento de estatística
+          const statMapping = getStatMapping(stat.key);
+          
+          // Usar o hook usePlayerProcessing para processar jogadores
+          const { processPlayers } = usePlayerProcessing(statMapping, getTeamInfoHook);
+          
+          // Processar jogadores usando a mesma lógica da página de detalhes
+          const processedPlayers = processPlayers(players);
+          
+          // Pegar os 5 primeiros jogadores processados
+          const topPlayers = processedPlayers.slice(0, 5);
 
-          if (filteredPlayers.length === 0) {
+          if (topPlayers.length === 0) {
             return (
               <div key={index}>
                 <div className="inline-block text-sm font-bold mb-2 bg-black text-white p-2 rounded-xl">
@@ -136,26 +143,25 @@ export const RankingGroup: React.FC<RankingGroupProps> = ({ title, stats, player
             )
           }
 
+          // Formatar os jogadores para o RankingCard
+          const formattedPlayers = topPlayers.map((player, idx) => ({
+            id: player.player.id,
+            name: player.player.nome,
+            team: player.teamInfo.nome,
+            value: player.value,
+            camisa: player.player.camisa,
+            teamColor: idx === 0 ? player.teamInfo.cor : undefined,
+            teamLogo: `/assets/times/logos/${normalizeForFilePath(player.teamInfo.nome)}.png`,
+            isFirst: idx === 0
+          }));
+
           return (
             <div key={index}>
               <RankingCard
                 title={stat.title}
                 category={title}
-                players={filteredPlayers.map((player, playerIndex) => {
-                  const teamInfo = getTeamInfo(player.timeId);
-                  const value = calculateStat(player, stat.key);
-
-                  return {
-                    id: player.id,
-                    name: player.nome,
-                    team: teamInfo.nome,
-                    value: normalizeValue(value, stat.key),
-                    camisa: player.camisa,
-                    teamColor: playerIndex === 0 ? teamInfo.cor : undefined,
-                    teamLogo: `/assets/times/logos/${normalizeForFilePath(teamInfo.nome)}.png`,
-                    isFirst: playerIndex === 0,
-                  }
-                })}
+                stat={stat.key}
+                players={formattedPlayers}
               />
             </div>
           )
