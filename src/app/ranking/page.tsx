@@ -102,11 +102,10 @@ export default function Page() {
         });
     };
 
-
     return (
         <RankingLayout initialFilter="jogadores">
             <div className="pb-12 bg-[#ECECEC]">
-                {/* Botões de categoria para telas grandes (lg+) */}
+                {/* Botões de categoria para todas as telas */}
                 <div className="px-4 pt-8 lg:px-8 xl:px-12 xl:max-w-5xl max-w-7xl mx-auto xl:ml-20">
                     <StatCategoryButtons
                         selectedCategory={selectedCategory}
@@ -114,15 +113,15 @@ export default function Page() {
                     />
                 </div>
 
-                {/* Visualização em grid para telas grandes (lg+) */}
+                {/* Visualização em grid para todas as telas */}
                 <div className="px-4 mt-8 lg:px-8 xl:px-12 max-w-7xl mx-auto xl:ml-20">
-                    <StatCardsGrid // @ts-ignore
+                    <StatCardsGrid //@ts-ignore
                         stats={prepareStatsForCards(players, times, currentStats, categoryTitle)}
                         category={categoryTitle}
                     />
                 </div>
 
-                {/* Visualização em carrossel para telas menores (md-) */}
+                {/* Visualização em carrossel apenas para telas menores */}
                 <div className="lg:hidden">
                     <RankingGroup
                         title="PASSE"
