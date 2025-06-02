@@ -51,13 +51,198 @@ export default function CompararTimesPage() {
     }, [selectedTeams, temporada]);
 
     // Função para carregar dados de comparação
-    const loadComparisonData = async () => {
-        if (!selectedTeams.time1Id || !selectedTeams.time2Id) return;
+    // Função para carregar dados de comparação
+// Função para carregar dados de comparação
+const loadComparisonData = async () => {
+    if (!selectedTeams.time1Id || !selectedTeams.time2Id) return;
 
-        try {
-            setLoadingComparison(true);
+    try {
+        setLoadingComparison(true);
 
-            // URL da API
+        // Verificar se deve usar dados locais
+        const USE_LOCAL_DATA = process.env.NEXT_PUBLIC_USE_LOCAL_DATA === 'true';
+
+        if (USE_LOCAL_DATA) {
+            // Simular delay para manter UX
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            // Buscar times e jogadores
+            const time1 = times.find(t => t.id === selectedTeams.time1Id);
+            const time2 = times.find(t => t.id === selectedTeams.time2Id);
+            
+            if (!time1 || !time2) {
+                throw new Error('Times não encontrados');
+            }
+
+            // Processar jogadores e agregar estatísticas
+            const jogadoresTime1 = time1.jogadores || [];
+            const jogadoresTime2 = time2.jogadores || [];
+
+            // Função para agregar estatísticas de um time
+            const agregarEstatisticas = (jogadores: any[]) => {
+                const stats = {
+                    passe: {
+                        jardas_de_passe: 0,
+                        passes_completos: 0,
+                        passes_tentados: 0,
+                        td_passados: 0,
+                        interceptacoes_sofridas: 0,
+                        sacks_sofridos: 0,
+                        fumble_de_passador: 0
+                    },
+                    corrida: {
+                        jardas_corridas: 0,
+                        corridas: 0,
+                        tds_corridos: 0,
+                        fumble_de_corredor: 0
+                    },
+                    recepcao: {
+                        jardas_recebidas: 0,
+                        recepcoes: 0,
+                        alvo: 0,
+                        tds_recebidos: 0
+                    },
+                    retorno: {
+                        jardas_retornadas: 0,
+                        retornos: 0,
+                        td_retornados: 0
+                    },
+                    defesa: {
+                        tackles_totais: 0,
+                        tackles_for_loss: 0,
+                        sacks_forcado: 0,
+                        fumble_forcado: 0,
+                        interceptacao_forcada: 0,
+                        passe_desviado: 0,
+                        safety: 0,
+                        td_defensivo: 0
+                    },
+                    kicker: {
+                        fg_bons: 0,
+                        tentativas_de_fg: 0,
+                        fg_mais_longo: 0,
+                        xp_bons: 0,
+                        tentativas_de_xp: 0
+                    },
+                    punter: {
+                        punts: 0,
+                        jardas_de_punt: 0
+                    }
+                };
+
+                jogadores.forEach(jogador => {
+                    if (jogador.estatisticas) {
+                        // Agregar passe
+                        if (jogador.estatisticas.passe) {
+                            stats.passe.jardas_de_passe += jogador.estatisticas.passe.jardas_de_passe || 0;
+                            stats.passe.passes_completos += jogador.estatisticas.passe.passes_completos || 0;
+                            stats.passe.passes_tentados += jogador.estatisticas.passe.passes_tentados || 0;
+                            stats.passe.td_passados += jogador.estatisticas.passe.td_passados || 0;
+                            stats.passe.interceptacoes_sofridas += jogador.estatisticas.passe.interceptacoes_sofridas || 0;
+                            stats.passe.sacks_sofridos += jogador.estatisticas.passe.sacks_sofridos || 0;
+                            stats.passe.fumble_de_passador += jogador.estatisticas.passe.fumble_de_passador || 0;
+                        }
+
+                        // Agregar corrida
+                        if (jogador.estatisticas.corrida) {
+                            stats.corrida.jardas_corridas += jogador.estatisticas.corrida.jardas_corridas || 0;
+                            stats.corrida.corridas += jogador.estatisticas.corrida.corridas || 0;
+                            stats.corrida.tds_corridos += jogador.estatisticas.corrida.tds_corridos || 0;
+                            stats.corrida.fumble_de_corredor += jogador.estatisticas.corrida.fumble_de_corredor || 0;
+                        }
+
+                        // Agregar recepção
+                        if (jogador.estatisticas.recepcao) {
+                            stats.recepcao.jardas_recebidas += jogador.estatisticas.recepcao.jardas_recebidas || 0;
+                            stats.recepcao.recepcoes += jogador.estatisticas.recepcao.recepcoes || 0;
+                            stats.recepcao.alvo += jogador.estatisticas.recepcao.alvo || 0;
+                            stats.recepcao.tds_recebidos += jogador.estatisticas.recepcao.tds_recebidos || 0;
+                        }
+
+                        // Agregar retorno
+                        if (jogador.estatisticas.retorno) {
+                            stats.retorno.jardas_retornadas += jogador.estatisticas.retorno.jardas_retornadas || 0;
+                            stats.retorno.retornos += jogador.estatisticas.retorno.retornos || 0;
+                            stats.retorno.td_retornados += jogador.estatisticas.retorno.td_retornados || 0;
+                        }
+
+                        // Agregar defesa
+                        if (jogador.estatisticas.defesa) {
+                            stats.defesa.tackles_totais += jogador.estatisticas.defesa.tackles_totais || 0;
+                            stats.defesa.tackles_for_loss += jogador.estatisticas.defesa.tackles_for_loss || 0;
+                            stats.defesa.sacks_forcado += jogador.estatisticas.defesa.sacks_forcado || 0;
+                            stats.defesa.fumble_forcado += jogador.estatisticas.defesa.fumble_forcado || 0;
+                            stats.defesa.interceptacao_forcada += jogador.estatisticas.defesa.interceptacao_forcada || 0;
+                            stats.defesa.passe_desviado += jogador.estatisticas.defesa.passe_desviado || 0;
+                            stats.defesa.safety += jogador.estatisticas.defesa.safety || 0;
+                            stats.defesa.td_defensivo += jogador.estatisticas.defesa.td_defensivo || 0;
+                        }
+
+                        // Agregar kicker
+                        if (jogador.estatisticas.kicker) {
+                            stats.kicker.fg_bons += jogador.estatisticas.kicker.fg_bons || 0;
+                            stats.kicker.tentativas_de_fg += jogador.estatisticas.kicker.tentativas_de_fg || 0;
+                            stats.kicker.xp_bons += jogador.estatisticas.kicker.xp_bons || 0;
+                            stats.kicker.tentativas_de_xp += jogador.estatisticas.kicker.tentativas_de_xp || 0;
+                            
+                            // Para fg_mais_longo, pegar o maior valor
+                            if ((jogador.estatisticas.kicker.fg_mais_longo || 0) > stats.kicker.fg_mais_longo) {
+                                stats.kicker.fg_mais_longo = jogador.estatisticas.kicker.fg_mais_longo || 0;
+                            }
+                        }
+
+                        // Agregar punter
+                        if (jogador.estatisticas.punter) {
+                            stats.punter.punts += jogador.estatisticas.punter.punts || 0;
+                            stats.punter.jardas_de_punt += jogador.estatisticas.punter.jardas_de_punt || 0;
+                        }
+                    }
+                });
+
+                return stats;
+            };
+
+            // Calcular estatísticas agregadas
+            const estatisticasTime1 = agregarEstatisticas(jogadoresTime1);
+            const estatisticasTime2 = agregarEstatisticas(jogadoresTime2);
+
+            // Montar dados no formato esperado pela sua página
+            const comparisonData = {
+                teams: {
+                    time1: {
+                        ...time1,
+                        temporada,
+                        estatisticas: estatisticasTime1,
+                        destaques: {
+                            ataque: { passador: null, corredor: null, recebedor: null, retornador: null },
+                            defesa: { tackler: null, rusher: null, interceptador: null, desviador: null },
+                            specialTeams: { kicker: null, punter: null }
+                        }
+                    },
+                    time2: {
+                        ...time2,
+                        temporada,
+                        estatisticas: estatisticasTime2,
+                        destaques: {
+                            ataque: { passador: null, corredor: null, recebedor: null, retornador: null },
+                            defesa: { tackler: null, rusher: null, interceptador: null, desviador: null },
+                            specialTeams: { kicker: null, punter: null }
+                        }
+                    }
+                },
+                metaData: {
+                    temporada,
+                    geradoEm: new Date().toISOString(),
+                    totalJogos: {
+                        time1: jogadoresTime1.length,
+                        time2: jogadoresTime2.length
+                    }
+                }
+            };
+            
+            setComparisonData(comparisonData);
+        } else {
+            // Manter sua implementação original para API
             const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000/api';
             const url = `${apiBaseUrl}/comparar-times?time1Id=${selectedTeams.time1Id}&time2Id=${selectedTeams.time2Id}&temporada=${temporada}`;
 
@@ -69,12 +254,13 @@ export default function CompararTimesPage() {
 
             const data = await response.json();
             setComparisonData(data);
-        } catch (error) {
-            console.error('Erro ao carregar dados de comparação:', error);
-        } finally {
-            setLoadingComparison(false);
         }
-    };
+    } catch (error) {
+        console.error('Erro ao carregar dados de comparação:', error);
+    } finally {
+        setLoadingComparison(false);
+    }
+};
 
     // Função para selecionar um time
     const selectTeam = (position: 'time1Id' | 'time2Id', teamId: number) => {
