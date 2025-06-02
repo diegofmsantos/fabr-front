@@ -20,7 +20,7 @@ import { useQueryClient } from "@tanstack/react-query"
 import { queryKeys } from "@/hooks/queryKeys"
 import { Time } from "@/types/time"
 import { Jogador } from "@/types/jogador"
-import { NoDataFound } from "@/components/NoDataFound"
+import { NoDataFound } from "@/components/ui/NoDataFound"
 
 // Interface para erro de dados não encontrados
 interface DataNotFoundError extends Error {
