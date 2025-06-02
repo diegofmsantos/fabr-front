@@ -17,8 +17,16 @@ import ShareButton from "@/components/ui/buttonShare"
 import { createSlug } from "@/utils/formatUrl"
 import Link from "next/link"
 import { useTeam } from "@/hooks/queries"
+import { NoDataFound } from "@/components/ui/NoDataFound"
 
 type Setor = "ATAQUE" | "DEFESA" | "SPECIAL"
+
+// Interface para erro de dados não encontrados
+interface DataNotFoundError extends Error {
+  code: 'NOT_FOUND';
+  temporada: string;
+  entityName?: string;
+}
 
 export default function Page() {
   const params = useParams()
@@ -54,16 +62,19 @@ export default function Page() {
   const opacity = useTransform(scrollY, [0, 200], [1, 0])
   const height = useTransform(scrollY, [0, 200], [330, 50])
 
+  // Verificar se é erro de dados não encontrados
+  const isNotFoundError = error && (error as DataNotFoundError).code === 'NOT_FOUND';
+
   // Atualiza o título da página
   useEffect(() => {
     if (currentTeam?.nome) {
       document.title = currentTeam.nome
-    } else if (error) {
-      document.title = "Erro ao carregar time"
+    } else if (isNotFoundError) {
+      document.title = "Time não encontrado"
     } else if (!loadingTeam) {
       document.title = "Time não encontrado"
     }
-  }, [currentTeam, loadingTeam, error])
+  }, [currentTeam, loadingTeam, isNotFoundError])
 
   const handleShowBio = () => {
     // Criar nova URLSearchParams com os parâmetros existentes
@@ -105,8 +116,20 @@ export default function Page() {
     router.replace(`?${params.toString()}`, { scroll: false });
   }
 
+  // Mostrar componente de dados não encontrados
+  if (isNotFoundError) {
+    return (
+      <NoDataFound
+        type="team"
+        temporada={temporada}
+        entityName={decodedTimeName}
+        onGoBack={() => router.back()}
+      />
+    );
+  }
+
   if (loadingTeam) return <Loading />
-  if (error) return <div>Erro ao carregar o time</div>
+  if (error && !isNotFoundError) return <div>Erro ao carregar o time</div>
   if (!currentTeam) return <Loading />
 
   const capacetePath = `/assets/times/capacetes/${currentTeam.capacete || "default-capacete.png"}`
@@ -125,7 +148,10 @@ export default function Page() {
           style={{ backgroundColor: currentTeam.cor || "#000" }}
         >
           <Link
-            href="/"
+            href={{
+              pathname: "/",
+              query: { temporada: temporada }
+            }}
             className="absolute top-2 left-3 rounded-xl text-xs text-white py-1 px-2 lg:left-32 xl:left-[420px] 2xl:left-[570px]"
           >
             {currentTeam.sigla || "N/A"}

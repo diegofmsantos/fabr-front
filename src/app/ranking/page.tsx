@@ -114,15 +114,15 @@ export default function Page() {
                 </div>
 
                 {/* Visualização em grid para todas as telas */}
-                <div className="px-4 mt-8 lg:px-8 xl:px-12 max-w-7xl mx-auto xl:ml-20">
-                    <StatCardsGrid //@ts-ignore
+                <div className="px-4 lg:px-8 xl:px-12 max-w-7xl mx-auto xl:ml-20">
+                    <StatCardsGrid
                         stats={prepareStatsForCards(players, times, currentStats, categoryTitle)}
                         category={categoryTitle}
                     />
                 </div>
 
                 {/* Visualização em carrossel apenas para telas menores */}
-                <div className="lg:hidden">
+                <div className="lg:hidden mb-20">
                     <RankingGroup
                         title="PASSE"
                         stats={[

@@ -16,20 +16,21 @@ export const Tab: React.FC<TabProps> = ({ className = '' }) => {
   const isRankingRoute = pathname.startsWith('/ranking')
   const isNoticiasRoute = pathname.startsWith('/noticias')
   const isMercadoRoute = pathname.startsWith('/mercado')
+  const isCompararRoute = pathname.startsWith('/comparar-times')
   const [isAboutOpen, setIsAboutOpen] = useState(false)
 
   return (
     <>
       <div className={`fixed bottom-0 w-full bg-[#272731] shadow-md border-t flex justify-around items-center py-2 z-50 ${className} xl:hidden`}>
         <Link href="/">
-          <div className={`flex flex-col items-center ${!isRankingRoute && !isNoticiasRoute && !isMercadoRoute ? "text-[#63E300]" : "text-gray-400"}`}>
+          <div className={`flex flex-col items-center ${!isRankingRoute && !isNoticiasRoute && !isMercadoRoute && !isCompararRoute ? "text-[#63E300]" : "text-gray-400"}`}>
             <Image
-              src={!isRankingRoute && !isNoticiasRoute && !isMercadoRoute ? "/assets/logo-capacete-verde.png" : "/assets/logo-capacete-branco.png"}
+              src={!isRankingRoute && !isNoticiasRoute && !isMercadoRoute && !isCompararRoute ? "/assets/logo-capacete-verde.png" : "/assets/logo-capacete-branco.png"}
               alt="capacete"
               width={25}
               height={25}
             />
-            <span className="text-sm">Times</span>
+            <span className="text-[12px]">Times</span>
           </div>
         </Link>
 
@@ -41,7 +42,19 @@ export const Tab: React.FC<TabProps> = ({ className = '' }) => {
               width={25}
               height={25}
             />
-            <span className="text-sm">Ranking</span>
+            <span className="text-[12px]">Ranking</span>
+          </div>
+        </Link>
+
+        <Link href="/comparar-times">
+          <div className={`flex flex-col items-center ${isCompararRoute ? "text-[#63E300]" : "text-gray-400"}`}>
+            <Image
+              src={isCompararRoute ? "/assets/compare-active.png" : "/assets/compare.png"}
+              alt=""
+              width={25}
+              height={25}
+            />
+            <span className="text-[12px]">Comparar</span>
           </div>
         </Link>
 
@@ -53,7 +66,7 @@ export const Tab: React.FC<TabProps> = ({ className = '' }) => {
               width={25}
               height={25}
             />
-            <span className="text-sm">Mercado</span>
+            <span className="text-[12px]">Mercado</span>
           </div>
         </Link>
 
@@ -65,7 +78,7 @@ export const Tab: React.FC<TabProps> = ({ className = '' }) => {
               width={25}
               height={25}
             />
-            <span className="text-sm">Notícias</span>
+            <span className="text-[12px]">Notícias</span>
           </div>
         </Link>
 

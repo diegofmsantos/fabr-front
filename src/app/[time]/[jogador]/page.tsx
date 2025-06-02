@@ -9,18 +9,25 @@ import Link from "next/link"
 import { Stats } from "@/components/Stats/Stats"
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
 import { useEffect, useState } from "react"
-import { JogadorSkeleton } from "@/components/ui/JogadorSkeleton"
 import { Loading } from "@/components/ui/Loading"
 import { SelectFilter } from "@/components/SelectFilter"
 import PlayerNameHeader from "@/components/Jogador/PlayerNameHeader"
 import { SemJogador } from "@/components/SemJogador"
 import { getPlayerSlug, getTeamSlug } from "@/utils/formatUrl"
 import ShareButton from "@/components/ui/buttonShare"
-import { usePlayerDetails, useJogadores } from '@/hooks/queries'
+import { usePlayerDetails, useJogadores, useTimes } from '@/hooks/queries'
 import { useQueryClient } from "@tanstack/react-query"
 import { queryKeys } from "@/hooks/queryKeys"
 import { Time } from "@/types/time"
 import { Jogador } from "@/types/jogador"
+import { NoDataFound } from "@/components/NoDataFound"
+
+// Interface para erro de dados não encontrados
+interface DataNotFoundError extends Error {
+    code: 'NOT_FOUND';
+    temporada: string;
+    entityName?: string;
+}
 
 export default function Page() {
     // Hooks de navegação e parâmetros
@@ -45,22 +52,36 @@ export default function Page() {
     const height = useTransform(scrollY, [0, 200], [340, 50])
 
     // Fetch de dados
-    const { data: jogadores } = useJogadores(selectedTemporada)
+    const { data: jogadores, error: jogadoresError } = useJogadores(selectedTemporada);
+    const { data: times, error: timesError } = useTimes(selectedTemporada);
     const {
         data: jogadorData,
         isLoading: loading,
-        error
+        error: jogadorError
     } = usePlayerDetails(
         params.time?.toString(),
         params.jogador?.toString(),
         selectedTemporada
     );
 
-    // Log para debug
+    // Verificar se é erro de dados não encontrados
+    const isNotFoundError =
+        (jogadoresError && (jogadoresError as DataNotFoundError).code === 'NOT_FOUND') ||
+        (timesError && (timesError as DataNotFoundError).code === 'NOT_FOUND') ||
+        (jogadorError && (jogadorError as DataNotFoundError).code === 'NOT_FOUND');
+
+    // Determinar qual erro usar para mostrar informações
+    const errorToShow = jogadorError || jogadoresError || timesError;
+
+    // Log para debug (apenas um useEffect)
     useEffect(() => {
         console.log('Dados do jogador:', jogadorData);
         console.log('Temporada atual:', selectedTemporada);
-    }, [jogadorData, selectedTemporada]);
+        console.log('Erro jogadores:', jogadoresError);
+        console.log('Erro times:', timesError);
+        console.log('Erro jogador:', jogadorError);
+        console.log('É erro não encontrado?', isNotFoundError);
+    }, [jogadorData, selectedTemporada, jogadoresError, timesError, jogadorError, isNotFoundError]);
 
     // Efeito para redirecionamento por ID
     useEffect(() => {
@@ -78,8 +99,10 @@ export default function Page() {
     useEffect(() => {
         if (jogadorData) {
             document.title = `${jogadorData.jogador.nome} - ${jogadorData.time.nome}`
+        } else if (isNotFoundError) {
+            document.title = "Jogador não encontrado"
         }
-    }, [jogadorData])
+    }, [jogadorData, isNotFoundError])
 
     // Efeito para redirecionamento quando o jogador mudou de time
     useEffect(() => {
@@ -95,6 +118,7 @@ export default function Page() {
         }
     }, [jogadorData, router, selectedTemporada]);
 
+    // Funções helper
     const getCamisaPath = (jogador: Jogador, currentTeam: Time): string => {
         // Se não temos dados suficientes, retorna uma imagem padrão
         if (!currentTeam?.nome || !jogador?.camisa) {
@@ -118,9 +142,37 @@ export default function Page() {
         return `/assets/times/logos/${time.logo}`;
     };
 
-    // Tratamento de carregamento e erros
+    // Tratamento de erros e carregamento
+    if (isNotFoundError) {
+        const errorData = errorToShow as DataNotFoundError;
+        return (
+            <NoDataFound
+                type="player"
+                temporada={errorData?.temporada || selectedTemporada}
+                entityName={errorData?.entityName || params.jogador?.toString()}
+                onGoBack={() => router.back()}
+            />
+        );
+    }
+
     if (loading) return <Loading />
-    if (error) return <div><JogadorSkeleton /><p>Jogador não encontrado ou ocorreu um erro.</p></div>
+
+    if (jogadorError || jogadoresError || timesError) {
+        return (
+            <div className="min-h-screen bg-[#ECECEC] flex items-center justify-center">
+                <div className="text-center">
+                    <p>Erro ao carregar dados do jogador</p>
+                    <button
+                        onClick={() => router.back()}
+                        className="mt-4 bg-blue-600 text-white px-4 py-2 rounded"
+                    >
+                        Voltar
+                    </button>
+                </div>
+            </div>
+        );
+    }
+
     if (!jogadorData) return <Loading />
     if (jogadorData.jogador.nome === '') return <div><SemJogador /></div>
 
@@ -290,7 +342,6 @@ export default function Page() {
                                         quality={100}
                                         className="w-48 h-60 ml-auto"
                                         priority
-
                                     />
                                 </div>
                             </div>

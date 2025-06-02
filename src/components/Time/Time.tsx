@@ -21,6 +21,23 @@ export const CurrentTime = ({ currentTeam }: Props) => {
 
     const bandeiraspath = `/assets/bandeiras/${currentTeam.bandeira_estado}`;
 
+    console.log('=== DEBUG TÍTULOS ===');
+    console.log('currentTeam:', currentTeam);
+    console.log('currentTeam.titulos:', currentTeam.titulos);
+    console.log('currentTeam.titulos tipo:', typeof currentTeam.titulos);
+    console.log('currentTeam.titulos é array?', Array.isArray(currentTeam.titulos));
+    
+    if (currentTeam.titulos && currentTeam.titulos.length > 0) {
+        console.log('currentTeam.titulos[0]:', currentTeam.titulos[0]);
+        console.log('nacionais:', currentTeam.titulos[0].nacionais);
+        console.log('conferencias:', currentTeam.titulos[0].conferencias);
+        console.log('estaduais:', currentTeam.titulos[0].estaduais);
+    } else {
+        console.log('titulos está vazio ou não existe');
+    }
+    console.log('=== FIM DEBUG ===');
+
+
     return (
         <div className="p-4 mb-6 flex flex-col gap-8 lg:p-0 lg:mt-20 xl:max-w-[650px] xl:min-w-[650px] xl:m-auto xl:p-0 2xl:w-[800px] 2xl:min-w-[800px] 2xl:ml-20">
             <div>
