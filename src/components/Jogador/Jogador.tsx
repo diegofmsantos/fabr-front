@@ -37,10 +37,6 @@ export const Jogador = ({ currentTeam, selectedSetor }: Props) => {
                 return;
             }
 
-            console.log(`Filtrando jogadores para time ID: ${currentTeam.id}, setor: ${selectedSetor}, temporada: ${temporada}`);
-            console.log(`Nome do time atual: ${currentTeam.nome}`);
-            console.log(`Total de jogadores disponíveis: ${jogadores.length}`);
-
             const jogadoresDoTime = jogadores.filter((jogador: JogadorType) => {
                 const match = jogador.timeId === currentTeam.id &&
                     jogador.setor?.toUpperCase() === selectedSetor.toUpperCase();

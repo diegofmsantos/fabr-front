@@ -137,7 +137,32 @@ export const TeamStatsList: React.FC<TeamStatsListProps> = ({ players, times, st
       return b.value - a.value
     })
 
+  // Função para gerar paths das imagens
+  const getLogoPath = (teamName: string): string => {
+    // Normalização específica para logos - mantém hífens entre palavras
+    const normalizedName = teamName.toLowerCase()
+      .trim()
+      .replace(/\s+/g, '-') // Substitui espaços por hífens
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '') // Remove acentos
+      .replace(/[^a-z0-9-]/g, ''); // Remove caracteres especiais, mantém hífens
+    
+    const logoPath = `/assets/times/logos/${normalizedName}.png`;
+    
+    // Debug logs - remova depois de testar
+    console.log('Team Name:', teamName);
+    console.log('Normalized Name:', normalizedName);
+    console.log('Logo Path:', logoPath);
+    
+    return logoPath;
+  }
 
+  const getCapacetePath = (teamName: string, capacete?: string): string => {
+    if (capacete) {
+      return `/assets/times/capacetes/${capacete}`;
+    }
+    return `/assets/times/capacetes/${normalizeForFilePath(teamName)}.png`;
+  }
 
   const TeamListItem: React.FC<{ team: RankedTeam; index: number }> = ({ team, index }) => {
 
@@ -152,7 +177,7 @@ export const TeamStatsList: React.FC<TeamStatsListProps> = ({ players, times, st
 
         <div>
           <Link
-            key={team.time.id}
+            key={`team-${team.time.id}-${index}`}
             href={`/${encodeURIComponent(team.time.nome || '')}`}
             className={`block`}
           >
@@ -168,10 +193,17 @@ export const TeamStatsList: React.FC<TeamStatsListProps> = ({ players, times, st
                     <h4 className="font-extrabold italic text-xl max-w-36 uppercase leading-4 md:text-[28px] md:leading-6">{team.time.nome}</h4>
                     <div className="flex items-center gap-1 ">
                       <Image
-                        src={`/assets/times/logos/${normalizeForFilePath(team.time.nome)}.png`}
+                        src={getLogoPath(team.time.nome)}
                         width={60}
                         height={60}
                         alt={`Logo do time ${team.time.nome}`}
+                        onError={(e) => {
+                          const target = e.currentTarget;
+                          if (target.src !== '/assets/times/logos/logo-default.png') {
+                            console.error('Erro ao carregar logo:', getLogoPath(team.time.nome));
+                            target.src = '/assets/times/logos/logo-default.png';
+                          }
+                        }}
                       />
                     </div>
                     <span className="font-extrabold italic text-[40px]">
@@ -180,7 +212,7 @@ export const TeamStatsList: React.FC<TeamStatsListProps> = ({ players, times, st
                   </div>
                   <div className="relative w-[200px] h-[200px]">
                     <Image
-                      src={`/assets/times/capacetes/${team.time.capacete}`}
+                      src={getCapacetePath(team.time.nome, team.time.capacete)}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       alt={`Capacete do ${team.time.nome}`}
@@ -196,11 +228,18 @@ export const TeamStatsList: React.FC<TeamStatsListProps> = ({ players, times, st
                     <span className="font-bold flex items-center gap-2">
                       <div>{index + 1}</div>
                       <Image
-                        src={`/assets/times/logos/${normalizeForFilePath(team.time.nome)}.png`}
+                        src={getLogoPath(team.time.nome)}
                         width={40}
                         height={40}
                         alt={`Logo do time ${team.time.nome}`}
                         className='mr-4'
+                        onError={(e) => {
+                          const target = e.currentTarget;
+                          if (target.src !== '/assets/times/logos/logo-default.png') {
+                            console.error('Erro ao carregar logo (lista):', getLogoPath(team.time.nome));
+                            target.src = '/assets/times/logos/logo-default.png';
+                          }
+                        }}
                       />
                     </span>
                     <div className=" text-sm">
@@ -234,7 +273,7 @@ export const TeamStatsList: React.FC<TeamStatsListProps> = ({ players, times, st
     <div className="bg-[#ECECEC] py-8 max-w-[1200px] mx-auto">
       <div className="">
         {rankedTeams.map((team, index) => (
-          <TeamListItem key={team.time.id} team={team} index={index} />
+          <TeamListItem key={`team-list-${team.time.id}-${index}`} team={team} index={index} />
         ))}
       </div>
     </div>

@@ -4,7 +4,6 @@ import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons'
 import { StatsExplicacao } from './StatsExplicacao'
-import { normalizeForFilePath } from '@/utils/services/FormatterService'
 
 interface PlayerStats {
   player: any
@@ -25,6 +24,12 @@ interface StatsTierProps {
 }
 
 const StatsTier: React.FC<StatsTierProps> = ({ title, players, backgroundColor = 'bg-black', statsType, isLastTier = false }) => {
+  const normalizeForFilePath = (input: string): string =>
+    input.toLowerCase()
+      .replace(/\s+/g, '-')
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9-]/g, '')
 
   const getShirtPath = (team: string, camisa: string): string => {
     const normalizedTeam = normalizeForFilePath(team);
@@ -57,13 +62,16 @@ const StatsTier: React.FC<StatsTierProps> = ({ title, players, backgroundColor =
         {title}
       </div>
       <ul className="flex flex-col text-white h-full">
-        {players.map(({ player, teamInfo, value, index }) => {
+        {players.map(({ player, teamInfo, value, index }, arrayIndex) => {
           const teamLogoPath = `/assets/times/logos/${normalizeForFilePath(teamInfo.nome)}.png`;
-          const globalIndex = index + 1
+          const globalIndex = index + 1;
+          
+          // Criar uma key única usando múltiplos identificadores
+          const uniqueKey = `${statsType}-${title}-${player.id}-${arrayIndex}`;
 
           return (
             <li
-              key={player.id}
+              key={uniqueKey}
               className={`flex items-center justify-center p-2 px-4 border-b border-b-[#D9D9D9] rounded-md 
                 ${index === 0 ? "bg-gray-100 text-black shadow-lg" : "bg-white text-black"
                 }`}

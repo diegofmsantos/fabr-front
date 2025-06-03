@@ -1,3 +1,5 @@
+import { Jogador } from "@/types/jogador"
+import { Time } from "@/types/time"
 import { statMappings } from "@/utils/constants/statMappings"
 import { formatValue, normalizeForFilePath } from "@/utils/services/FormatterService"
 import Image from "next/image"
@@ -23,12 +25,18 @@ interface RankingCardProps {
 
 export const RankingCard: React.FC<RankingCardProps> = ({ title, category, players, stat }) => {
 
-  const getShirtPath = (team: string, camisa: string): string => {
-    const normalizedTeam = normalizeForFilePath(team);
-    return team && team !== "time-desconhecido" && camisa
-      ? `/assets/times/camisas/${normalizedTeam}/${camisa}`
-      : "/assets/times/camisas/camisa-default.png"
+ const getCamisaPath = (teamName: string, camisaNumber: string): string => {
+  if (!teamName || !camisaNumber) {
+    return '/assets/times/camisas/camisa-default.png';
   }
+
+  const timeNormalizado = teamName.toLowerCase()
+    .replace(/\s+/g, '-')
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+
+  return `/assets/times/camisas/${timeNormalizado}/${camisaNumber}`;
+}
 
   const getStatsUrl = (): string => {
     if (stat) {
@@ -38,9 +46,9 @@ export const RankingCard: React.FC<RankingCardProps> = ({ title, category, playe
         }
       }
     }
-    
+
     const categoryLower = category ? category.toLowerCase() : '';
-    
+
     const normalizedTitle = normalizeForFilePath(title);
     return `/ranking/stats?stat=${categoryLower}-${normalizedTitle}`;
   }
@@ -82,7 +90,7 @@ export const RankingCard: React.FC<RankingCardProps> = ({ title, category, playe
                     </div>
                     <div className="relative w-[200px] h-[200px]">
                       <Image
-                        src={getShirtPath(player.team, player.camisa)}
+                        src={getCamisaPath(player.team, player.camisa)}
                         fill
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                         alt={`Camisa`}
