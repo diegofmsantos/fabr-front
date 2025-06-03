@@ -1,12 +1,11 @@
 // src/hooks/usePlayerProcessing.ts
 import { Jogador } from '@/types/jogador'
-import { StatConfig } from '@/utils/statMappings'
+import { StatConfig } from '@/utils/constants/statMappings'
 import { TeamInfo } from './useTeamInfo'
 import { ProcessedPlayer } from '@/types/processedPlayer'
-import { StatsCalculator } from '@/utils/statsCalculator'
-import { BaseStatCalculator } from '@/utils/baseStat'
-import { StatsFormatter } from '@/utils/statsFormater'
 import { CategoryKey } from '@/utils/categoryThresholds'
+import { BaseStatCalculator, StatsCalculator } from '@/utils/services/StatsServices'
+import { StatsFormatter } from '@/utils/services/FormatterService'
 
 export const usePlayerProcessing = (statMapping: StatConfig, getTeamInfo: (timeId: number) => TeamInfo) => {
   

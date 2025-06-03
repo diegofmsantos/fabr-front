@@ -7,11 +7,11 @@ import { Time } from "@/types/time"
 import { Loading } from "@/components/ui/Loading"
 import { RankingLayout } from "@/components/Ranking/RankingLayout"
 import { RankingGroup } from "@/components/Ranking/RankingGroup"
-import { StatCardsGrid } from "@/components/StatCardsGrid"
+import { StatCardsGrid } from "@/components/Stats/StatCardsGrid"
 import { StatCategoryButtons } from "@/components/ui/StatCategoryButtons"
-import { StatKey } from '@/components/Ranking/RankingGroup';
-import { calculateStat, compareValues, shouldIncludePlayer } from "@/utils/statMappings"
-import { getStatsByCategory } from "@/utils/getCategoryLabel"
+import { getStatsByCategory } from "@/utils/helpers/categoryHelpers"
+import { StatKey } from "@/types/Stats"
+import { calculateStat, compareValues, shouldIncludePlayer } from "@/utils/services/StatsServices"
 
 export default function Page() {
     const [players, setPlayers] = useState<Jogador[]>([])

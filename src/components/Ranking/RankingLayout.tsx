@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { RankingFilters } from '../FilterButton'
-import { SelectFilter } from '../SelectFilter'
+import { RankingFilters } from '../ui/FilterButton'
+import { SelectFilter } from '../ui/SelectFilter'
 import { useJogadores, useTimes } from '@/hooks/queries' // Importe os hooks necessários
 import { ButtonSetor } from '../ui/buttonSetor'
 

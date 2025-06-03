@@ -6,7 +6,7 @@ import { getTimes } from '@/api/api'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import { NoStats } from '../ui/NoStats'
-import { getStatMapping } from '@/utils/statMappings'
+import { getStatMapping } from '@/utils/constants/statMappings'
 import { TeamRankingCard } from './TimeRankingCard'
 
 interface TeamRankingGroupProps {

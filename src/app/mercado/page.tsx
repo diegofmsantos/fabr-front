@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation'
 import Image from 'next/image'
 import { getTransferenciasFromJson } from '@/api/api'
 import { Loading } from '@/components/ui/Loading'
-import { SelectFilter } from '@/components/SelectFilter'
+import { SelectFilter } from '@/components/ui/SelectFilter'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
 

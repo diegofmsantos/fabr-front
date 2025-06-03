@@ -1,4 +1,5 @@
-import { StatKey } from "@/components/Ranking/RankingGroup";
+import { StatKey } from "@/types/Stats";
+
 
 export const getCategoryLabel = (category: string): string => {
   const labels: Record<string, string> = {

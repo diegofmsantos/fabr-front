@@ -1,4 +1,4 @@
-import { statMappings } from "@/utils/statMappings"
+import { statMappings } from "@/utils/constants/statMappings"
 import Image from "next/image"
 import Link from "next/link"
 

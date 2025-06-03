@@ -1,9 +1,9 @@
 import React from 'react';
-import { StatKey } from '@/components/Ranking/RankingGroup';
 import { Jogador } from '@/types/jogador';
 import { Time } from '@/types/time';
-import { calculateStat, compareValues, shouldIncludePlayer } from '@/utils/statMappings';
 import { RankingCard } from '@/components/Ranking/RankingCard';
+import { StatKey } from '@/types/Stats';
+import { calculateStat, compareValues, shouldIncludePlayer } from '@/utils/services/StatsServices';
 
 interface PlayerCardProps {
   id: number;

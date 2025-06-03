@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import { Time } from '@/types/time'
 import { Jogador } from '@/types/jogador'
 import { Noticia } from '@/types/noticia'
-import { createSlug, findPlayerBySlug, getPlayerSlug, getTeamSlug } from '@/utils/formatUrl'
+import { createSlug, findPlayerBySlug, getPlayerSlug, getTeamSlug } from '@/utils/helpers/formatUrl'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { queryKeys } from './queryKeys'
 

@@ -2,8 +2,8 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { RankingFilters } from '../FilterButton'
-import { SelectFilter } from '../SelectFilter'
+import { RankingFilters } from '../ui/FilterButton'
+import { SelectFilter } from '../ui/SelectFilter'
 
 interface StatsLayoutProps {
     children: React.ReactNode;

@@ -1,5 +1,3 @@
-// src/utils/teamComparisonUtils.ts
-
 import { 
   TeamComparisonData, 
   TeamComparisonTeam, 
@@ -10,9 +8,6 @@ import {
   StatType 
 } from '@/types/teamComparison';
 
-/**
- * Formata um valor numérico para exibição
- */
 export const formatStatValue = (value: number, type: StatType = StatType.TOTAL): string => {
   if (value === null || value === undefined || isNaN(value)) return 'N/A';
 
@@ -29,25 +24,16 @@ export const formatStatValue = (value: number, type: StatType = StatType.TOTAL):
   }
 };
 
-/**
- * Calcula percentual de aproveitamento
- */
 export const calculatePercentage = (made: number, attempted: number): number => {
   if (attempted === 0) return 0;
   return (made / attempted) * 100;
 };
 
-/**
- * Calcula média por tentativa
- */
 export const calculateAverage = (total: number, attempts: number): number => {
   if (attempts === 0) return 0;
   return total / attempts;
 };
 
-/**
- * Compara dois valores e determina qual é melhor
- */
 export const compareValues = (
   value1: number, 
   value2: number, 
@@ -62,9 +48,6 @@ export const compareValues = (
   }
 };
 
-/**
- * Prepara dados para gráfico de uma categoria específica
- */
 export const prepareChartData = (
   team1: TeamComparisonTeam,
   team2: TeamComparisonTeam,
@@ -128,9 +111,6 @@ export const prepareChartData = (
   }));
 };
 
-/**
- * Gera cards de comparação para uma categoria
- */
 export const generateComparisonCards = (
   team1: TeamComparisonTeam,
   team2: TeamComparisonTeam,
@@ -292,7 +272,6 @@ export const generateComparisonCards = (
     const stat1 = format(value1);
     const stat2 = format(value2);
 
-    // Determinar qual é melhor (só para valores numéricos)
     let isFirstBetter = false;
     let isSecondBetter = false;
     let isEqual = false;
@@ -317,9 +296,6 @@ export const generateComparisonCards = (
   });
 };
 
-/**
- * Calcula resumo da comparação
- */
 export const calculateComparisonSummary = (
   team1: TeamComparisonTeam,
   team2: TeamComparisonTeam
@@ -360,9 +336,6 @@ export const calculateComparisonSummary = (
   return summary;
 };
 
-/**
- * Gera nome para arquivo de exportação
- */
 export const generateExportFileName = (team1Name: string, team2Name: string, temporada: string): string => {
   const date = new Date().toISOString().split('T')[0];
   const cleanTeam1 = team1Name.replace(/[^a-zA-Z0-9]/g, '');
@@ -370,9 +343,6 @@ export const generateExportFileName = (team1Name: string, team2Name: string, tem
   return `comparacao_${cleanTeam1}_vs_${cleanTeam2}_${temporada}_${date}`;
 };
 
-/**
- * Valida se os dados de comparação estão completos
- */
 export const validateComparisonData = (data: TeamComparisonData): boolean => {
   if (!data || !data.teams || !data.teams.time1 || !data.teams.time2) {
     return false;
@@ -384,9 +354,6 @@ export const validateComparisonData = (data: TeamComparisonData): boolean => {
   return !!(team1.nome && team1.estatisticas && team2.nome && team2.estatisticas);
 };
 
-/**
- * Normaliza dados de comparação para garantir consistência
- */
 export const normalizeComparisonData = (data: TeamComparisonData): TeamComparisonData => {
   const normalizeStats = (stats: any) => {
     const categories: StatCategory[] = ['passe', 'corrida', 'recepcao', 'retorno', 'defesa', 'kicker', 'punter'];

@@ -7,7 +7,7 @@ import { Time } from "@/types/time"
 import { Loading } from "@/components/ui/Loading"
 import { RankingLayout } from '@/components/Ranking/RankingLayout'
 import { TeamRankingGroup } from '@/components/Ranking/TimeRankingGroup'
-import { TeamStatCardsGrid, prepareTeamStatsForCards } from '@/components/TeamStatCardsGrid'
+import { TeamStatCardsGrid, prepareTeamStatsForCards } from '@/components/Stats/TeamStatCardsGrid'
 import { StatCategoryButtons } from '@/components/ui/StatCategoryButtons'
 import { TeamStats } from '@/types/Stats'
 

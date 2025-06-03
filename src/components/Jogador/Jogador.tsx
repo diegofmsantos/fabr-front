@@ -5,8 +5,8 @@ import { Jogador as JogadorType } from "@/types/jogador"
 import Image from "next/image"
 import Link from "next/link"
 import { useEffect, useState } from "react"
-import { SemJogador } from "../SemJogador"
-import { getPlayerSlug, getTeamSlug } from "@/utils/formatUrl"
+import { SemJogador } from "../ui/SemJogador"
+import { getPlayerSlug, getTeamSlug } from "@/utils/helpers/formatUrl"
 import { JogadorSkeleton } from "../ui/JogadorSkeleton"
 import { useSearchParams } from 'next/navigation'
 import { useJogadores } from '@/hooks/queries'

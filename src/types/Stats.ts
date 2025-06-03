@@ -1,3 +1,22 @@
+import { Jogador } from "./jogador";
+
+export type StatKey =
+  | keyof Jogador['estatisticas']['passe']
+  | keyof Jogador['estatisticas']['corrida']
+  | keyof Jogador['estatisticas']['recepcao']
+  | keyof Jogador['estatisticas']['retorno']
+  | keyof Jogador['estatisticas']['defesa']
+  | keyof Jogador['estatisticas']['kicker']
+  | keyof Jogador['estatisticas']['punter']
+  | 'passes_percentual'
+  | 'jardas_media'
+  | 'jardas_corridas_media'
+  | 'jardas_recebidas_media'
+  | 'jardas_retornadas_media'
+  | 'extra_points'
+  | 'field_goals'
+  | 'jardas_punt_media';
+
 export interface StatsBase {
   passe: PasseStats
   corrida: CorridaStats

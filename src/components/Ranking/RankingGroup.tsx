@@ -6,25 +6,9 @@ import { getTimes } from '@/api/api'
 import { RankingCard } from './RankingCard'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
-import { calculateStat, compareValues, shouldIncludePlayer } from '@/utils/statMappings'
 import { NoStats } from '../ui/NoStats'
-
-export type StatKey =
-  | keyof Jogador['estatisticas']['passe']
-  | keyof Jogador['estatisticas']['corrida']
-  | keyof Jogador['estatisticas']['recepcao']
-  | keyof Jogador['estatisticas']['retorno']
-  | keyof Jogador['estatisticas']['defesa']
-  | keyof Jogador['estatisticas']['kicker']
-  | keyof Jogador['estatisticas']['punter']
-  | 'passes_percentual'
-  | 'jardas_media'
-  | 'jardas_corridas_media'
-  | 'jardas_recebidas_media'
-  | 'jardas_retornadas_media'
-  | 'extra_points'
-  | 'field_goals'
-  | 'jardas_punt_media';
+import { calculateStat, compareValues, shouldIncludePlayer } from '@/utils/services/StatsServices'
+import { StatKey } from '@/types/Stats'
 
 interface RankingGroupProps {
   title: string;

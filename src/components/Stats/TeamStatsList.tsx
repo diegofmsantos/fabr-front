@@ -2,13 +2,13 @@ import React from 'react'
 import Image from 'next/image'
 import { Jogador } from '@/types/jogador'
 import { Time } from '@/types/time'
-import { StatConfig } from '@/utils/statMappings'
+import { StatConfig } from '@/utils/constants/statMappings'
 import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons'
-import { StatsFormatter } from '@/utils/statsFormater'
 import { NoStats } from '../ui/NoStats'
 import { getCategoryFromKey } from '../Ranking/TimeRankingGroup'
+import { StatsFormatter } from '@/utils/services/FormatterService'
 
 interface TeamStatsListProps {
   players: Jogador[]
