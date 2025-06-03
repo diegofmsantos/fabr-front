@@ -2,22 +2,8 @@ import React from 'react';
 import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
-
-interface Transferencia {
-  id: number;
-  jogadorNome: string;
-  timeOrigemId?: number;
-  timeOrigemNome?: string;
-  timeOrigemSigla?: string;
-  timeDestinoId: number;
-  timeDestinoNome?: string;
-  timeDestinoSigla?: string;
-  novaPosicao?: string | null;
-  novoSetor?: string | null;
-  novoNumero?: number | null;
-  novaCamisa?: string | null;
-  data: string;
-}
+import { Transferencia } from '@/types/time';
+import { normalizeForFilePath } from '@/utils/services/FormatterService';
 
 interface TransferenciaCardProps {
   transferencia: Transferencia;
@@ -28,17 +14,6 @@ export const TransferenciaCard: React.FC<TransferenciaCardProps> = ({
   transferencia, 
   destacado = false 
 }) => {
-  // Função para normalizar nomes de time para usar em paths de arquivos
-  const normalizeForFilePath = (input: string): string => {
-    if (!input) return '';
-    
-    return input
-      .toLowerCase()
-      .replace(/\s+/g, '-')
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .replace(/[^a-z0-9-]/g, '');
-  };
 
   const dataFormatada = new Date(transferencia.data).toLocaleDateString('pt-BR', {
     day: '2-digit',

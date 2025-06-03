@@ -27,7 +27,6 @@ export const Lista = () => {
         }
     }, [])
 
-    // Efeito para monitorar mudanças na URL
     useEffect(() => {
         const tempParam = searchParams?.get('temporada')
         if (tempParam) {
@@ -48,10 +47,8 @@ export const Lista = () => {
         const novaTemporada = e.target.value
         console.log(`Alterando temporada para: ${novaTemporada}`)
 
-        // Atualizar estado local
         setSelectedTemporada(novaTemporada)
 
-        // Manipular a URL manualmente
         if (novaTemporada === '2024') {
             console.log('Removendo parâmetro de temporada da URL (2024 é padrão)')
             router.replace('/', { scroll: false })
@@ -67,7 +64,6 @@ export const Lista = () => {
 
     return (
         <div className="flex flex-col w-full">
-            {/* Seção de filtro por temporada - usando select nativo */}
             <div className="fixed top-[210px] left-0 right-0 z-30 bg-[#ECECEC] py-4 md:top-[158px] lg:ml-9 xl:ml-72 xl:top-24">
                 <div className="max-w-[800px] mx-auto">
                     <div className="flex flex-col items-center px-4 w-full xl:ml-8 2xl:ml-0">
@@ -86,7 +82,6 @@ export const Lista = () => {
                 </div>
             </div>
 
-            {/* Grid de times */}
             <motion.div
                 className="max-w-[800px] grid grid-cols-3 gap-4 px-3 pt-[320px] pb-20 container bg-[#ECECEC] relative 
                 min-[400px]:grid-cols-4 md:grid-cols-5 md:pt-[260px] md:gap-5 lg:ml-32 xl:pt-[210px] xl:ml-64 2xl:ml-96"
@@ -110,13 +105,8 @@ export const Lista = () => {
                                 }}
                                 className="relative z-20 block"
                                 onClick={(e) => {
-                                    // Prevenimos o comportamento padrão
                                     e.preventDefault()
-
-                                    // Salvamos o último clique normalmente
                                     if (item.nome) handleClick(item.nome)
-
-                                    // Navegamos manualmente com a URL completa incluindo a temporada
                                     const url = `/${item.nome}?temporada=${selectedTemporada}`
                                     window.location.href = url
                                 }}

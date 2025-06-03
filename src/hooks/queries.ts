@@ -8,7 +8,6 @@ import { createSlug, findPlayerBySlug, getPlayerSlug, getTeamSlug } from '@/util
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { queryKeys } from './queryKeys'
 
-// Flag para controlar fonte dos dados
 const USE_LOCAL_DATA = process.env.NEXT_PUBLIC_USE_LOCAL_DATA === 'true'
 
 interface DataNotFoundError extends Error {
@@ -34,7 +33,6 @@ const fetchTimesLocal = async (temporada: string): Promise<Time[]> => {
         const { Times } = await import('@/data/times')
         return Times
     } else if (temporada === '2025') {
-        // Por enquanto, retorna erro até você criar o arquivo times-2025.ts
         throw createNotFoundError(temporada)
     }
     
@@ -42,7 +40,6 @@ const fetchTimesLocal = async (temporada: string): Promise<Time[]> => {
 }
 
 const fetchJogadoresLocal = async (temporada: string): Promise<Jogador[]> => {
-    // Simula delay de rede
     await new Promise(resolve => setTimeout(resolve, 200 + Math.random() * 300))
     
     const times = await fetchTimesLocal(temporada)
@@ -63,14 +60,13 @@ const fetchJogadoresLocal = async (temporada: string): Promise<Jogador[]> => {
 }
 
 const fetchNoticiasLocal = async (): Promise<Noticia[]> => {
-    // Simula delay de rede
     await new Promise(resolve => setTimeout(resolve, 200 + Math.random() * 300))
     
     try {
         const { Noticias } = await import('@/data/noticias')
         return Noticias
     } catch (error) {
-        return [] // Retorna array vazio se não tiver notícias
+        return []
     }
 }
 
@@ -98,7 +94,6 @@ export function useTemporada(explicitTemporada?: string) {
     const searchParams = useSearchParams();
     let temporada = explicitTemporada || searchParams?.get('temporada') || '2024';
 
-    // Validar que temporada é '2024' ou '2025'
     if (temporada !== '2024' && temporada !== '2025') {
         console.warn(`Temporada inválida: ${temporada}, usando 2024`);
         temporada = '2024';
@@ -107,7 +102,6 @@ export function useTemporada(explicitTemporada?: string) {
     return temporada;
 }
 
-// Hooks principais
 export function useJogadores(temporada?: string) {
     const currentTemporada = useTemporada(temporada);
 
@@ -177,8 +171,6 @@ export function useNoticias() {
     })
 }
 
-// Manter seus hooks complexos existentes (useTeam, usePlayerDetails) 
-// Eles já funcionam bem, só precisam usar os hooks básicos acima
 
 export function useTeam(teamName: string | undefined, explicitTemporada?: string) {
     const temporada = useTemporada(explicitTemporada);
@@ -214,7 +206,6 @@ export function useTeam(teamName: string | undefined, explicitTemporada?: string
                 return timeEncontrado;
             }
 
-            // Lógica de mapeamento específico (mantida do seu código original)
             if (temporada === '2025' && teamSlug === 'Parana-HP') {
                 timeEncontrado = times.find(t =>
                     getTeamSlug(t.nome || '') === 'Calvary-Cavaliers'
@@ -234,7 +225,6 @@ export function useTeam(teamName: string | undefined, explicitTemporada?: string
                 }
             }
 
-            // Outros mapeamentos...
             if (temporada === '2024' && teamSlug === 'Calvary-Cavaliers') {
                 timeEncontrado = times.find(t =>
                     getTeamSlug(t.nome || '') === 'Parana-HP'
@@ -348,7 +338,6 @@ export function useNoticiaDetalhes(noticiaId: number) {
     }
 }
 
-// Função de prefetch
 export const prefetchQueries = async (queryClient: any, temporada: string = '2024') => {
     console.log(`Pré-carregando dados para temporada: ${temporada}`);
 

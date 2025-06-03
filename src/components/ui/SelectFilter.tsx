@@ -1,4 +1,3 @@
-// components/SelectFilter.tsx
 import React, { useEffect, useState } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
@@ -17,21 +16,12 @@ interface SelectFilterProps {
   preventRefresh?: boolean;
 }
 
-export function SelectFilter({
-  label,
-  value,
-  onChange,
-  options,
-  className = '',
-  urlParam = 'temporada',
-  preventRefresh = false
-}: SelectFilterProps) {
+export function SelectFilter({ label, value, onChange, options, className = '', urlParam = 'temporada', preventRefresh = false }: SelectFilterProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [internalValue, setInternalValue] = useState(value);
 
-  // Atualiza o estado local quando o parâmetro da URL muda
   useEffect(() => {
     const paramValue = searchParams?.get(urlParam);
     if (paramValue && paramValue !== value && options.some(opt => opt.value === paramValue)) {
@@ -40,7 +30,6 @@ export function SelectFilter({
     }
   }, [searchParams, urlParam, value, onChange, options]);
 
-  // Atualiza o estado interno quando o valor externo muda
   useEffect(() => {
     if (value !== internalValue) {
       setInternalValue(value);
@@ -48,34 +37,27 @@ export function SelectFilter({
   }, [value]);
 
   const handleChange = (newValue: string) => {
-    // Previne alterações inválidas
     if (!options.some(opt => opt.value === newValue)) {
       console.warn(`Valor inválido para SelectFilter: ${newValue}`);
       return;
     }
     
-    // Atualiza o estado interno
     setInternalValue(newValue);
     
-    // Atualiza o estado externo
     onChange(newValue);
     
-    // Atualiza a URL apenas se não estiver prevenindo refresh
     if (!preventRefresh) {
       const currentParams = new URLSearchParams(searchParams?.toString() || '');
       
-      // Cria um novo objeto URLSearchParams com os parâmetros atuais
       const params = new URLSearchParams(currentParams.toString());
       params.set(urlParam, newValue);
       
-      // Preserva outros parâmetros importantes como 'show' e 'setor'
       const showParam = currentParams.get('show');
       const setorParam = currentParams.get('setor');
       
       if (showParam) params.set('show', showParam);
       if (setorParam) params.set('setor', setorParam);
       
-      // Usar replace em vez de push para não adicionar ao histórico
       const newUrl = `${pathname}?${params.toString()}`;
       console.log(`Navegando para: ${newUrl}`);
       router.replace(newUrl, { scroll: false });

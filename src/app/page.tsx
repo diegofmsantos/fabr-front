@@ -11,7 +11,6 @@ export const metadata: Metadata = {
 export default async function Page() {
   const queryClient = new QueryClient()
 
-  // Pré-carrega os dados no servidor
   await queryClient.prefetchQuery({
     queryKey: queryKeys.times('2024'),
     queryFn: async () => {

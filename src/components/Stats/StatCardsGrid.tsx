@@ -4,6 +4,7 @@ import { Time } from '@/types/time';
 import { RankingCard } from '@/components/Ranking/RankingCard';
 import { StatKey } from '@/types/Stats';
 import { calculateStat, compareValues, shouldIncludePlayer } from '@/utils/services/StatsServices';
+import { normalizeForFilePath } from '@/utils/services/FormatterService';
 
 interface PlayerCardProps {
   id: number;
@@ -45,17 +46,6 @@ export const prepareStatsForCards = (
       })
       .slice(0, 5);
 
-
-    const normalizeForFilePath = (input: string): string => {
-      if (!input) return '';
-
-      return input
-        .toLowerCase()
-        .replace(/\s+/g, '-')
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .replace(/[^a-z0-9-]/g, '');
-    };
 
     const formattedPlayers = filteredPlayers.map((player, index) => {
       const teamInfo = times.find(t => t.id === player.timeId) || {};

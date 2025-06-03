@@ -2,6 +2,7 @@ import { CorridaStats, DefesaStats, KickerStats, PasseStats, PunterStats, Recepc
 import { CATEGORY_THRESHOLDS, CategoryKey, getTierForValue } from "../categoryThresholds";
 import { Jogador } from "@/types/jogador";
 import { getStatCategory, StatConfig, StatResult } from "../constants/statMappings";
+import { getCategoryFromKey } from "../helpers/categoryHelpers";
 
 
 const calculateDefenseTotal = (stats: DefesaStats): number => {
@@ -75,36 +76,30 @@ export class StatsCalculator {
         return this.calculatePercentage(stats.xp_bons, stats.tentativas_de_xp)
     }
 
-    // Field Goals por Distância
     if (key.match(/^fg_\d+_\d+$/)) {
       const stringRatio = stats[key]
       if (typeof stringRatio !== 'string') return null
       return stringRatio || null
     }
 
-    // Valores diretos
     return typeof stats[key] === 'number' ? stats[key] : null
   }
 
   static formatValue(value: number | string | null, isCalculated: boolean, key: string): string {
     if (value === null) return 'N/A'
 
-    // Se for uma string de ratio (X/Y), retorna direto
     if (typeof value === 'string' && value.includes('/')) {
       return value
     }
 
-    // Para médias
     if (isCalculated && key.includes('media')) {
       return typeof value === 'number' ? value.toFixed(1) : 'N/A';
     }
 
-    // Para percentuais
     if (isCalculated && (key.includes('percentual') || key === 'field_goals' || key === 'extra_points')) {
       return typeof value === 'number' ? `${Math.round(value)}%` : 'N/A'
     }
 
-    // Para valores inteiros
     return typeof value === 'number' ? Math.round(value).toString() : 'N/A'
   }
 }
@@ -349,3 +344,58 @@ export const getFGRatio = (fgString: string): number => {
     if (isNaN(made) || isNaN(attempted) || attempted === 0) return 0
     return made / attempted
 }
+
+
+export const calculateTeamStat = (teamStat: any, key: string): number | null => {
+        try {
+            const category = getCategoryFromKey(key);
+            
+            // Verificar se a categoria e chave existem
+            if (!teamStat[category] || !(key in teamStat[category]) && 
+                !['passes_percentual', 'jardas_media', 'jardas_corridas_media', 
+                'jardas_recebidas_media', 'jardas_retornadas_media', 'extra_points', 
+                'field_goals', 'jardas_punt_media'].includes(key)) {
+                return null;
+            }
+
+            switch (key) {
+                case 'passes_percentual':
+                    return teamStat.passe.passes_tentados > 0
+                        ? (teamStat.passe.passes_completos / teamStat.passe.passes_tentados) * 100
+                        : null
+                case 'jardas_media':
+                    return teamStat.passe.passes_tentados > 0
+                        ? teamStat.passe.jardas_de_passe / teamStat.passe.passes_tentados
+                        : null
+                case 'jardas_corridas_media':
+                    return teamStat.corrida.corridas > 0
+                        ? teamStat.corrida.jardas_corridas / teamStat.corrida.corridas
+                        : null
+                case 'jardas_recebidas_media':
+                    return teamStat.recepcao.alvo > 0
+                        ? teamStat.recepcao.jardas_recebidas / teamStat.recepcao.alvo
+                        : null
+                case 'jardas_retornadas_media':
+                    return teamStat.retorno.retornos > 0
+                        ? teamStat.retorno.jardas_retornadas / teamStat.retorno.retornos
+                        : null
+                case 'jardas_punt_media':
+                    return teamStat.punter.punts > 0
+                        ? teamStat.punter.jardas_de_punt / teamStat.punter.punts
+                        : null
+                case 'extra_points':
+                    return teamStat.kicker.tentativas_de_xp > 0
+                        ? (teamStat.kicker.xp_bons / teamStat.kicker.tentativas_de_xp) * 100
+                        : null
+                case 'field_goals':
+                    return teamStat.kicker.tentativas_de_fg > 0
+                        ? (teamStat.kicker.fg_bons / teamStat.kicker.tentativas_de_fg) * 100
+                        : null;
+                default:
+                    return teamStat[category][key];
+            }
+        } catch (error) {
+            console.error(`Error calculating stat ${key}:`, error)
+            return null
+        }
+    }

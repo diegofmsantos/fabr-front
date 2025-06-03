@@ -14,7 +14,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ className = '' }) => {
     const [activeItem, setActiveItem] = useState('');
 
     useEffect(() => {
-        // Verifica a rota atual e define o item ativo
         if (pathname?.includes('/ranking')) {
             setActiveItem('ranking');
         } else if (pathname?.includes('/noticia')) {
@@ -30,7 +29,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ className = '' }) => {
 
     return (
         <aside className={`hidden xl:flex flex-col w-80 bg-[#272731] fixed left-32 top-28 bottom-28 rounded-lg z-40 xl:w-72 xl:left-16 2xl:w-96 2xl:left-32 ${className}`}>
-            {/* Logo */}
             <div className="flex justify-center items-center pt-6 pb-8">
                 <Link href="/">
                     <Image
@@ -45,7 +43,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ className = '' }) => {
                 </Link>
             </div>
 
-            {/* Navegação */}
             <nav className="flex flex-col mt-8 px-6 gap-6">
                 <Link
                     href="/"
@@ -88,7 +85,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ className = '' }) => {
                 </Link>
             </nav>
 
-            {/* Footer com direitos autorais e/ou social media (opcional) */}
             <div className="mt-auto p-4 text-gray-400 text-xs text-center">
                 <p>© 2025 FABR Network</p>
                 <p>Todos os direitos reservados</p>

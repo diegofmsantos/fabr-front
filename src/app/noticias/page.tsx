@@ -4,17 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Loading } from '@/components/ui/Loading'
 import { useNoticias } from '@/hooks/queries'
-
-function createSlug(text: string): string {
-    return text
-        .toLowerCase()
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .replace(/[^\w\s-]/g, '')
-        .replace(/\s+/g, '-')
-        .replace(/--+/g, '-')
-        .trim()
-}
+import { createSlug } from '@/utils/helpers/formatUrl'
 
 export default function NoticiasPage() {
     const {

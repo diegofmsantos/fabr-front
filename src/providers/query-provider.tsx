@@ -13,8 +13,8 @@ export function QueryProvider({ children }: QueryProviderProps) {
       new QueryClient({
         defaultOptions: {
           queries: {
-            refetchOnWindowFocus: false, // desabilita refetch ao focar janela
-            retry: 1, // número de tentativas em caso de erro
+            refetchOnWindowFocus: false, 
+            retry: 1, 
           },
         },
       }),

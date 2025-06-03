@@ -8,8 +8,8 @@ import { Loading } from '@/components/ui/Loading'
 import { SelectFilter } from '@/components/ui/SelectFilter'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
+import { normalizeForFilePath } from '@/utils/services/FormatterService'
 
-// Interface para as transferências
 interface Transferencia {
   id: number
   jogadorNome: string
@@ -34,7 +34,6 @@ export default function MercadoPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  // Carregar transferências
   useEffect(() => {
     const loadTransferencias = async () => {
       try {
@@ -53,19 +52,6 @@ export default function MercadoPage() {
     loadTransferencias()
   }, [temporadaOrigem, temporadaDestino])
 
-  // Função para normalizar nomes de time para usar em paths de arquivos
-  const normalizeForFilePath = (input: string): string => {
-    if (!input) return '';
-    
-    return input
-      .toLowerCase()
-      .replace(/\s+/g, '-')
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .replace(/[^a-z0-9-]/g, '');
-  }
-
-  // Agrupar transferências por time de destino
   const transferenciasAgrupadas = transferencias.reduce((acc, transferencia) => {
     const timeDestino = transferencia.timeDestinoNome || 'Desconhecido';
     
@@ -77,7 +63,6 @@ export default function MercadoPage() {
     return acc;
   }, {} as Record<string, Transferencia[]>);
 
-  // Ordenar times por quantidade de transferências (decrescente)
   const timesOrdenados = Object.entries(transferenciasAgrupadas)
     .sort(([, transferenciasA], [, transferenciasB]) => 
       transferenciasB.length - transferenciasA.length

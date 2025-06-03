@@ -26,8 +26,6 @@ export function StatsLayout({ children, initialFilter, statType }: StatsLayoutPr
         }
     }
 
-    const handleSeasonChange = (newSeason: string) => setSeason(newSeason)
-
     return (
         <div className="min-h-screen bg-[#ECECEC] max-w-[1200px] mx-auto">
             <div className="w-full pt-20 xl:pt-0 xl:ml-40">

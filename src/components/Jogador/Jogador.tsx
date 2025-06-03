@@ -22,7 +22,6 @@ export const Jogador = ({ currentTeam, selectedSetor }: Props) => {
     const searchParams = useSearchParams()
     const temporada = searchParams.get('temporada') || '2024'
 
-    // Usar o hook useJogadores com a temporada correta
     const { data: jogadores = [], isLoading } = useJogadores(temporada)
 
     useEffect(() => {
@@ -42,7 +41,6 @@ export const Jogador = ({ currentTeam, selectedSetor }: Props) => {
             console.log(`Nome do time atual: ${currentTeam.nome}`);
             console.log(`Total de jogadores disponíveis: ${jogadores.length}`);
 
-            // Usa os jogadores obtidos do hook useJogadores em vez de fazer uma nova chamada à API
             const jogadoresDoTime = jogadores.filter((jogador: JogadorType) => {
                 const match = jogador.timeId === currentTeam.id &&
                     jogador.setor?.toUpperCase() === selectedSetor.toUpperCase();
@@ -59,20 +57,16 @@ export const Jogador = ({ currentTeam, selectedSetor }: Props) => {
         }
     }, [currentTeam, selectedSetor, jogadores, isLoading, temporada]);
 
-    // Função adaptada para a estrutura de pastas existente
     const getCamisaPath = (jogador: JogadorType, currentTeam: Time): string => {
-        // Se não temos dados suficientes, retorna uma imagem padrão
         if (!currentTeam?.nome || !jogador?.camisa) {
             return '/assets/times/camisas/camisa-default.png';
         }
         
-        // Normaliza o nome do time para o formato usado nas pastas
         const timeNormalizado = currentTeam.nome.toLowerCase()
             .replace(/\s+/g, '-')
             .normalize("NFD")
             .replace(/[\u0300-\u036f]/g, "");
             
-        // Retorna o caminho correto da camisa
         return `/assets/times/camisas/${timeNormalizado}/${jogador.camisa}`;
     }
 
@@ -95,7 +89,6 @@ export const Jogador = ({ currentTeam, selectedSetor }: Props) => {
             {jogadoresFiltrados.map((jogador: JogadorType) => {
                 const experienciaAnos = calcularExperiencia(jogador.experiencia);
 
-                // Obter caminho da camisa adaptado à estrutura existente
                 const camisaPath = getCamisaPath(jogador, currentTeam);
 
                 return (

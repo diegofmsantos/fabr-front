@@ -1,4 +1,3 @@
-// src/components/Comparar/ChartsComparison.tsx
 "use client"
 
 import React, { useState } from 'react';
@@ -13,7 +12,6 @@ export const ChartsComparison: React.FC<ChartsComparisonProps> = ({ comparisonDa
         'passe' | 'corrida' | 'recepcao' | 'retorno' | 'defesa' | 'kicker' | 'punter'
     >('passe');
 
-    // Preparar dados para gráficos
     const prepareChartData = () => {
         if (!comparisonData) return {
             passeData: [], corridaData: [], recepcaoData: [],
@@ -23,7 +21,6 @@ export const ChartsComparison: React.FC<ChartsComparisonProps> = ({ comparisonDa
         const time1 = comparisonData.teams.time1;
         const time2 = comparisonData.teams.time2;
 
-        // Dados para o gráfico de passe
         const passeData = [
             {
                 name: "Jardas",
@@ -52,7 +49,6 @@ export const ChartsComparison: React.FC<ChartsComparisonProps> = ({ comparisonDa
             }
         ];
 
-        // Dados para o gráfico de corrida
         const corridaData = [
             {
                 name: "Jardas",
@@ -76,7 +72,6 @@ export const ChartsComparison: React.FC<ChartsComparisonProps> = ({ comparisonDa
             }
         ];
 
-        // Dados para o gráfico de recepção
         const recepcaoData = [
             {
                 name: "Jardas",
@@ -100,7 +95,6 @@ export const ChartsComparison: React.FC<ChartsComparisonProps> = ({ comparisonDa
             }
         ];
 
-        // Dados para o gráfico de retorno
         const retornoData = [
             {
                 name: "Jardas",
@@ -119,7 +113,6 @@ export const ChartsComparison: React.FC<ChartsComparisonProps> = ({ comparisonDa
             }
         ];
 
-        // Dados para o gráfico de defesa
         const defesaData = [
             {
                 name: "Tackles Totais",
@@ -148,7 +141,6 @@ export const ChartsComparison: React.FC<ChartsComparisonProps> = ({ comparisonDa
             }
         ];
 
-        // Dados para o gráfico de kicker
         const kickerData = [
             {
                 name: "FG Bons",
@@ -172,7 +164,6 @@ export const ChartsComparison: React.FC<ChartsComparisonProps> = ({ comparisonDa
             }
         ];
 
-        // Dados para o gráfico de punter
         const punterData = [
             {
                 name: "Jardas",
@@ -219,7 +210,6 @@ export const ChartsComparison: React.FC<ChartsComparisonProps> = ({ comparisonDa
 
     return (
         <div className="mt-4">
-            {/* Selector para escolher categoria do gráfico */}
             <div className="mb-6">
                 <div className="flex justify-center space-x-2 flex-wrap gap-2">
                     <button
@@ -267,7 +257,6 @@ export const ChartsComparison: React.FC<ChartsComparisonProps> = ({ comparisonDa
                 </div>
             </div>
 
-            {/* Gráfico */}
             <div className="bg-white p-4 rounded-lg shadow-md">
                 <h3 className="text-lg font-bold mb-4">{getChartTitle()}</h3>
                 <div className="h-80">
@@ -299,7 +288,6 @@ export const ChartsComparison: React.FC<ChartsComparisonProps> = ({ comparisonDa
                 </div>
             </div>
 
-            {/* Resumo Comparativo */}
             <div className="mt-6 bg-white p-4 rounded-lg shadow-md">
                 <h3 className="text-lg font-bold mb-4">Resumo Comparativo</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

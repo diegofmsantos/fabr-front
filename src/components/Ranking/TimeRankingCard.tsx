@@ -2,6 +2,7 @@ import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { statMappings } from '@/utils/constants/statMappings'
+import { formatValue, normalizeForFilePath } from '@/utils/services/FormatterService'
 
 interface TeamCardProps {
     id: number
@@ -20,69 +21,26 @@ interface TeamRankingCardProps {
 export const TeamRankingCard: React.FC<TeamRankingCardProps> = ({ title, category, teams }) => {
 
     const validTeams = teams.filter(team => {
-        // Se o valor for porcentagem, apenas verificamos se existe
         if (typeof team.value === 'string' && team.value.includes('%')) {
             return true;
         }
-        // Para números, verificamos se é maior que zero
         const value = parseFloat(team.value);
         return !isNaN(value) && value > 0;
     });
 
-    const normalizeForFilePath = (input: string): string => {
-        return input
-            .toLowerCase()
-            .replace(/\s+/g, "-")
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .replace(/[^a-z0-9-]/g, "");
-    }
-
-    const formatValue = (value: string | number, title: string): string => {
-        let numValue: number;
-
-        if (typeof value === 'string') {
-            numValue = parseFloat(value.replace(/\./g, '').replace(/,/g, '.'));
-        } else {
-            numValue = value;
-        }
-
-        if (isNaN(numValue)) return value.toString();
-
-        const percentageIdentifiers = [
-            'PASSES(%)', 'FG(%)', 'XP(%)',
-            'PASSES(%):', 'FG(%):', 'XP(%):'
-        ];
-
-        const isPercentage =
-            percentageIdentifiers.some(pt =>
-                title.toUpperCase().includes(pt)) ||
-            title.includes('(%)');
-
-        if (title.includes('(AVG)') || title.includes('MÉDIA') || title.includes('MEDIA')) {
-            return numValue.toFixed(1).replace('.', ',');
-        }
-
-        if (isPercentage) {
-            return `${Math.round(numValue)}%`;
-        }
-
-        return Math.round(numValue).toLocaleString('pt-BR');
-    }
 
     const getViewMoreUrl = (category: string, title: string): string => {
-        // Normalizar a categoria para remover acentos e caracteres especiais
         const categoryLower = normalizeForFilePath(category.toLowerCase());
-    
+
         const normalizedTitle = title.toUpperCase().replace(/\s+/g, ' ').trim();
-    
+
         for (const [urlParam, mapping] of Object.entries(statMappings)) {
             if (urlParam.startsWith(categoryLower) &&
                 mapping.title.toUpperCase() === normalizedTitle) {
                 return `/ranking/times/stats?stat=${urlParam}`;
             }
         }
-    
+
         const statKey = normalizeForFilePath(title);
         return `/ranking/times/stats?stat=${categoryLower}-${statKey}`;
     }

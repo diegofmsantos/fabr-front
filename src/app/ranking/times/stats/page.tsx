@@ -10,7 +10,6 @@ import { TeamStatsList } from '@/components/Stats/TeamStatsList'
 import { statGroups } from '@/utils/statGroups'
 import { StatsLayout } from '@/components/Stats/StatsLayout'
 
-// Função getStatGroup permanece a mesma
 const getStatGroup = (statParam: string): string => {
     for (const group of statGroups) {
         if (group.stats.some(stat => stat.urlParam === statParam)) {
@@ -20,7 +19,6 @@ const getStatGroup = (statParam: string): string => {
     return 'Passando'
 }
 
-// Componente Select em um componente separado com Suspense
 const TeamStatSelect = React.memo(({ currentStat }: { currentStat: string }) => {
     const router = useRouter()
     const currentGroup = getStatGroup(currentStat)
@@ -53,7 +51,6 @@ const TeamStatSelect = React.memo(({ currentStat }: { currentStat: string }) => 
 
 TeamStatSelect.displayName = 'TeamStatSelect'
 
-// Componente de conteúdo separado
 function TeamStatsContent() {
     const searchParams = useSearchParams()
     const statParam = searchParams.get('stat') || 'passe-jardas'
@@ -79,7 +76,6 @@ function TeamStatsContent() {
     );
 }
 
-// Componente principal da página envolto em um Suspense
 export default function TeamStatsPage() {
     const searchParams = useSearchParams();
     const statParam = searchParams.get('stat') || '';

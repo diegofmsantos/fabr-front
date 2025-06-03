@@ -1,7 +1,8 @@
 import React from 'react';
 import { Time } from '@/types/time';
 import { TeamRankingCard } from '@/components/Ranking/TimeRankingCard';
-import { getCategoryFromKey } from '@/components/Ranking/TimeRankingGroup';
+import { getCategoryFromKey } from '@/utils/helpers/categoryHelpers';
+import { formatStatValue } from '@/utils/helpers/formatUrl';
 
 interface TeamCardProps {
   id: number;
@@ -22,35 +23,6 @@ interface TeamStatCardsGridProps {
   category: string;
 }
 
-// Função para lidar com a formatação de valores estatísticos
-const formatStatValue = (value: number | null, statKey: string, title: string): string => {
-  if (value === null) return 'N/A';
-  
-  // Formatar porcentagens
-  if (
-    statKey.includes('percentual') || 
-    statKey === 'field_goals' || 
-    statKey === 'extra_points' || 
-    title.includes('(%)') || 
-    title === 'FG(%)' || 
-    title === 'XP(%)'
-  ) {
-    return `${Math.round(value)}%`;
-  }
-  
-  // Formatar médias
-  if (
-    statKey.includes('media') || 
-    title.includes('(AVG)')
-  ) {
-    return value.toFixed(1).replace('.', ',');
-  }
-  
-  // Formatar números
-  return Math.round(value).toLocaleString('pt-BR');
-};
-
-// Função para preparar os dados de times para exibição em cartões
 export const prepareTeamStatsForCards = (
   teamStats: any[],
   times: Time[],
@@ -58,14 +30,12 @@ export const prepareTeamStatsForCards = (
   categoryTitle: string
 ): TeamStatCardProps[] => {
   return currentStats.map(stat => {
-    // Calcular estatísticas para cada time
     const rankedTeams = teamStats
       .map(teamStat => {
         const category = getCategoryFromKey(stat.key);
         let value: number | null = null;
 
         try {
-          // Lidar com estatísticas calculadas
           switch (stat.key) {
             case 'passes_percentual':
               value = teamStat.passe.passes_tentados > 0
@@ -108,7 +78,6 @@ export const prepareTeamStatsForCards = (
                 : null;
               break;
             default:
-              // Estatísticas diretas
               if (category && teamStat[category] && stat.key in teamStat[category]) {
                 value = teamStat[category][stat.key];
               } else {
@@ -128,15 +97,12 @@ export const prepareTeamStatsForCards = (
       })
       .filter(team => team.value !== null && team.value > 0)
       .sort((a, b) => {
-        // Lidar com valores nulos ou indefinidos
         if (a.value === null) return 1;
         if (b.value === null) return -1;
-        // Ordenar em ordem decrescente
         return b.value - a.value;
       })
       .slice(0, 5);
 
-    // Obter informações do time
     const getTeamInfo = (teamId: number) => {
       const team = times.find(t => t.id === teamId);
       return {
@@ -146,7 +112,6 @@ export const prepareTeamStatsForCards = (
       };
     };
 
-    // Formatar cada time para exibição
     const formattedTeams = rankedTeams.map((team, index) => {
       const teamInfo = getTeamInfo(team.teamId);
       
@@ -167,7 +132,6 @@ export const prepareTeamStatsForCards = (
   });
 };
 
-// O componente TeamStatCardsGrid
 export const TeamStatCardsGrid: React.FC<TeamStatCardsGridProps> = ({ stats, category }) => {
   return (
     <div className="hidden lg:grid grid-cols-2 gap-6 xl:ml-20">

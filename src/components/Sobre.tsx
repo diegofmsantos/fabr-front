@@ -15,14 +15,11 @@ export const Sobre = ({ isOpen, onClose }: SobreProps) => {
             className={`fixed inset-0 z-50 transform transition-all duration-500 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'
                 }`}
         >
-            {/* Backdrop com blur quando menu está aberto */}
             <div
                 className={`absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'
                     }`}
                 onClick={onClose}
             />
-
-            {/* Conteúdo do menu que desliza */}
             <div
                 className={`absolute right-0 top-0 h-full w-full max-w-md bg-[#272731] shadow-xl transform transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'
                     }`}
@@ -62,7 +59,6 @@ export const Sobre = ({ isOpen, onClose }: SobreProps) => {
                         <span className="text-gray-400">1.0.0</span>
                     </div>
 
-                    {/* Desenvolvedor */}
                     <div className="mb-8">
                         <h2 className="text-xl font-bold text-center mb-4">Contato FABR-Network</h2>
                         <Link

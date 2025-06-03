@@ -8,7 +8,6 @@ interface PlayerStatSelectProps {
     currentStat: string
 }
 
-// Função para obter o grupo da estatística atual
 const getStatGroup = (statParam: string): string => {
     for (const group of statGroups) {
         const stat = group.stats.find(s => s.urlParam === statParam)

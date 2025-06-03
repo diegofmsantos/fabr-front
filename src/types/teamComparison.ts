@@ -1,5 +1,3 @@
-// src/types/teamComparison.ts
-
 export interface TeamComparisonStats {
   passe: {
     jardas_de_passe: number;

@@ -27,13 +27,11 @@ const StatsPage: React.FC = () => {
   const groupPlayersByTier = (processedPlayers: ProcessedPlayer[]) => {
     return processedPlayers.reduce<Record<string, ProcessedPlayer[]>>(
       (acc, player) => {
-        // Determina o tier usando o valor base
         const tier = getTierForValue(
           player.baseStat,
           statMapping.category as CategoryKey
         );
 
-        // Agrupa o jogador no tier apropriado
         const tierKey = `tier${tier}`
         if (!acc[tierKey]) {
           acc[tierKey] = []
@@ -65,7 +63,6 @@ const StatsPage: React.FC = () => {
     backgroundColor?: string
   ) => {
     const getStatsType = (category: CategoryKey): StatType => {
-      // Mapeia as categorias em minúsculo para o formato correto
       const categoryMapping: Record<string, StatType> = {
         'passe': 'PASSE',
         'corrida': 'CORRIDA',
@@ -76,14 +73,12 @@ const StatsPage: React.FC = () => {
         'punter': 'PUNT'
       };
 
-      // Verifica primeiro pelo statParam para casos especiais
       if (statParam) {
-        const statBase = statParam.split('-')[0]; // Pega a parte antes do hífen
+        const statBase = statParam.split('-')[0]; 
         const mappedType = categoryMapping[statBase as CategoryKey]
         if (mappedType) return mappedType
       }
 
-      // Se não encontrou pelo statParam, usa a categoria direta
       return categoryMapping[category] || 'PASSE'
     }
 
@@ -103,7 +98,6 @@ const StatsPage: React.FC = () => {
 
   return (
     <StatsLayout initialFilter="jogadores" statType={statParam}>
-      {/* Conteúdo existente da página */}
 
       <div className="bg-[#ECECEC] min-h-screen pt-8 pb-14 px-2 lg:max-w-[800px] lg:min-w-[800px] lg:m-auto">
         <div className="">

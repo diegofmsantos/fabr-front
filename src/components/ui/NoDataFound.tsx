@@ -1,4 +1,3 @@
-// src/components/NoDataFound.tsx
 import React from 'react';
 import { AlertCircle, Calendar, User, Users } from 'lucide-react';
 
@@ -9,12 +8,7 @@ interface NoDataFoundProps {
   onGoBack?: () => void;
 }
 
-export const NoDataFound: React.FC<NoDataFoundProps> = ({ 
-  type, 
-  temporada, 
-  entityName,
-  onGoBack 
-}) => {
+export const NoDataFound: React.FC<NoDataFoundProps> = ({ type, temporada, entityName, onGoBack }) => {
   const isPlayer = type === 'player';
   
   return (

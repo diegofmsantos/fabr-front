@@ -21,7 +21,6 @@ import { NoDataFound } from "@/components/ui/NoDataFound"
 
 type Setor = "ATAQUE" | "DEFESA" | "SPECIAL"
 
-// Interface para erro de dados não encontrados
 interface DataNotFoundError extends Error {
   code: 'NOT_FOUND';
   temporada: string;
@@ -62,10 +61,8 @@ export default function Page() {
   const opacity = useTransform(scrollY, [0, 200], [1, 0])
   const height = useTransform(scrollY, [0, 200], [330, 50])
 
-  // Verificar se é erro de dados não encontrados
   const isNotFoundError = error && (error as DataNotFoundError).code === 'NOT_FOUND';
 
-  // Atualiza o título da página
   useEffect(() => {
     if (currentTeam?.nome) {
       document.title = currentTeam.nome
@@ -77,16 +74,13 @@ export default function Page() {
   }, [currentTeam, loadingTeam, isNotFoundError])
 
   const handleShowBio = () => {
-    // Criar nova URLSearchParams com os parâmetros existentes
+
     const params = new URLSearchParams(searchParams.toString());
 
-    // Modificar apenas os parâmetros que precisamos alterar
     params.set('show', 'bio');
 
-    // Remover o parâmetro setor caso exista
     params.delete('setor');
 
-    // Isso manterá o parâmetro 'temporada' se ele já existir
     router.replace(`?${params.toString()}`);
 
     setSelectedButton("bio")
@@ -96,7 +90,6 @@ export default function Page() {
     setSelectedButton("jogadores")
     setLoadingJogadores(true)
 
-    // Preservar todos os parâmetros da URL
     const params = new URLSearchParams(searchParams.toString());
     params.set('show', 'jogadores');
     params.set('setor', encodeURIComponent(selectedSetor));
@@ -108,7 +101,6 @@ export default function Page() {
   const handleSetorChange = (setor: Setor) => {
     setSelectedSetor(setor)
 
-    // Preservar todos os parâmetros da URL
     const params = new URLSearchParams(searchParams.toString());
     params.set('show', 'jogadores');
     params.set('setor', encodeURIComponent(setor));
@@ -116,7 +108,6 @@ export default function Page() {
     router.replace(`?${params.toString()}`, { scroll: false });
   }
 
-  // Mostrar componente de dados não encontrados
   if (isNotFoundError) {
     return (
       <NoDataFound
@@ -188,7 +179,6 @@ export default function Page() {
             label="TEMPORADA"
             value={temporada}
             onChange={(novaTemporada) => {
-              // Atualizar a URL com a nova temporada
               router.replace(`/${params.time}?show=${selectedButton}&setor=${selectedSetor}&temporada=${novaTemporada}`);
             }}
             options={[

@@ -1,4 +1,3 @@
-// src/components/Comparar/TeamComparisonHeader.tsx
 "use client"
 
 import React from 'react';
@@ -22,7 +21,6 @@ export const TeamComparisonHeader: React.FC<TeamComparisonHeaderProps> = ({ time
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Time 1 */}
             <Link href={`/${time1.nome}`} className="block">
                 <div
                     className="rounded-lg p-6 flex flex-col items-center text-white shadow-lg"
@@ -46,7 +44,6 @@ export const TeamComparisonHeader: React.FC<TeamComparisonHeaderProps> = ({ time
                 </div>
             </Link>
 
-            {/* Time 2 */}
             <Link href={`/${time2.nome}`} className="block">
                 <div
                     className="rounded-lg p-6 flex flex-col items-center text-white shadow-lg"

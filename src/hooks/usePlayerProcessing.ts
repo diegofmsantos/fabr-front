@@ -1,4 +1,3 @@
-// src/hooks/usePlayerProcessing.ts
 import { Jogador } from '@/types/jogador'
 import { StatConfig } from '@/utils/constants/statMappings'
 import { TeamInfo } from './useTeamInfo'
@@ -23,8 +22,6 @@ export function createProcessedPlayer(player: Jogador, statMapping: StatConfig, 
   const stats = player.estatisticas[statMapping.category]
   if (!stats) return null
 
-  // Remova qualquer verificação de requisitos mínimos aqui
-  // ou relaxe os requisitos para PUNT e CHUTE específicos
   const statValue = StatsCalculator.calculate(stats, statMapping.key)
   if (statValue === null) return null
 
@@ -32,14 +29,13 @@ export function createProcessedPlayer(player: Jogador, statMapping: StatConfig, 
   const formattedValue = StatsFormatter.format(statValue, statMapping);
 
   const average = typeof statValue === 'string' && statValue.includes('/')
-    ? Number(statValue.split('/')[0]) // Usa apenas o número de acertos para média
+    ? Number(statValue.split('/')[0]) 
     : Number(statValue);
 
   return { player, average, baseStat, teamInfo: getTeamInfo(player.timeId), value: formattedValue }
 }
 
 export function filterValidPlayer(player: ProcessedPlayer | null): player is ProcessedPlayer { 
-  // Remove verificações desnecessárias
   return player !== null;
 }
 

@@ -91,7 +91,6 @@ export const getStatCategory = (key: StatKey): keyof Jogador['estatisticas'] => 
 }
 
 export const statMappings: { [key: string]: StatConfig } = {
-    // PASSE
     'passe-jardas': {
         key: 'jardas_de_passe',
         title: 'Jardas',
@@ -139,8 +138,6 @@ export const statMappings: { [key: string]: StatConfig } = {
         title: 'Fumbles',
         category: 'passe'
     },
-
-    // CORRIDA
     'corrida-jardas': {
         key: 'jardas_corridas',
         title: 'Jardas',
@@ -167,8 +164,6 @@ export const statMappings: { [key: string]: StatConfig } = {
         title: 'Fumbles',
         category: 'corrida'
     },
-
-    // RECEPÇÃO
     'recepcao-jardas': {
         key: 'jardas_recebidas',
         title: 'Jardas',
@@ -195,8 +190,6 @@ export const statMappings: { [key: string]: StatConfig } = {
         title: 'Alvos',
         category: 'recepcao'
     },
-
-    // RETORNO
     'retorno-jardas': {
         key: 'jardas_retornadas',
         title: 'Jardas',
@@ -218,8 +211,6 @@ export const statMappings: { [key: string]: StatConfig } = {
         category: 'retorno',
         isCalculated: true
     },
-
-    // DEFESA
     'defesa-sacks': {
         key: 'sacks_forcado',
         title: 'Sacks',
@@ -260,8 +251,6 @@ export const statMappings: { [key: string]: StatConfig } = {
         title: 'Safeties',
         category: 'defesa'
     },
-
-    // CHUTE
     'chute-fg': {
         key: 'field_goals',
         title: 'FG(%)',
@@ -299,8 +288,6 @@ export const statMappings: { [key: string]: StatConfig } = {
         title: 'FG Mais Longo',
         category: 'kicker'
     },
-
-    // PUNT
     'punt-jardasavg': {
         key: 'jardas_punt_media',
         title: 'Jardas (AVG)',

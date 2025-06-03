@@ -65,10 +65,7 @@ export const processPlayerStats = (
     stats: Array<{ key: StatKey; title: string }>,
     categoryTitle: string
 ): ProcessedStatCard[] => {
-    // Normaliza o caminho do arquivo
     
-
-    // Obtém informações do time
     const getTeamInfo = (timeId: number) => {
         const team = times.find((t) => t.id === timeId);
         return {
@@ -94,7 +91,6 @@ export const processPlayerStats = (
                 const teamInfo = getTeamInfo(player.timeId);
                 const value = calculateStat(player, stat.key);
 
-                // Normaliza o valor para exibição
                 const normalizeValue = (value: string | number | null, statKey: StatKey): string => {
                     if (value === null) return "N/A";
 

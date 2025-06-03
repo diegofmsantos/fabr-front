@@ -168,7 +168,6 @@ export default function NoticiaDetalhes() {
             }}
           />
 
-          {/* Seção de Mais Notícias */}
           <div className="border-t">
 
             <h3 className="text-2xl font-bold my-6 border-b-4 border-b-[#63E300]">Mais notícias</h3>
@@ -223,7 +222,6 @@ export default function NoticiaDetalhes() {
               </Slider>
             </div>
 
-            {/* Botão Ver Todas as Notícias */}
             <div className="mt-8 text-center">
               <Link
                 href="/noticias"

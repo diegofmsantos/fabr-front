@@ -1,4 +1,5 @@
 import { statMappings } from "@/utils/constants/statMappings"
+import { formatValue, normalizeForFilePath } from "@/utils/services/FormatterService"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -22,15 +23,6 @@ interface RankingCardProps {
 
 export const RankingCard: React.FC<RankingCardProps> = ({ title, category, players, stat }) => {
 
-  const normalizeForFilePath = (input: string): string => {
-    return input
-        .toLowerCase()
-        .replace(/\s+/g, "-")
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .replace(/[^a-z0-9-]/g, "");
-}
-
   const getShirtPath = (team: string, camisa: string): string => {
     const normalizedTeam = normalizeForFilePath(team);
     return team && team !== "time-desconhecido" && camisa
@@ -38,37 +30,8 @@ export const RankingCard: React.FC<RankingCardProps> = ({ title, category, playe
       : "/assets/times/camisas/camisa-default.png"
   }
 
-  const formatValue = (value: string | number, title: string): string => {
-    // Se já for uma string e não for um número, retorna sem alteração
-    if (typeof value === 'string' && isNaN(Number(value))) {
-      return value;
-    }
-
-    // Converte para número
-    const numValue = typeof value === 'string' ? Number(value) : value;
-
-    // Verifica se é uma estatística de média (AVG) que precisa de apenas uma casa decimal
-    if (title.includes('(AVG)')) {
-      return numValue.toFixed(1).replace('.', ',');
-    }
-
-    // Verifica se é uma estatística que deve mostrar porcentagem
-    const isPercentage =
-      title.includes('(%)') ||
-      ['PASSES(%)', 'FG(%)', 'XP(%)'].includes(title);
-
-    if (isPercentage) {
-      return `${Math.round(numValue)}%`;
-    }
-
-    // Para valores normais, usa formatação padrão com separador de milhar
-    return numValue.toLocaleString('pt-BR');
-  }
-
   const getStatsUrl = (): string => {
-    // Se temos a propriedade stat (chave da estatística)
     if (stat) {
-      // Procurar no mapeamento existente pelo urlParam correspondente à chave da estatística
       for (const [urlParam, mapping] of Object.entries(statMappings)) {
         if (mapping.key === stat) {
           return `/ranking/stats?stat=${urlParam}`;
@@ -76,10 +39,8 @@ export const RankingCard: React.FC<RankingCardProps> = ({ title, category, playe
       }
     }
     
-    // Categoria em minúsculo para URL para fallback
     const categoryLower = category ? category.toLowerCase() : '';
     
-    // Fallback para normalização do título
     const normalizedTitle = normalizeForFilePath(title);
     return `/ranking/stats?stat=${categoryLower}-${normalizedTitle}`;
   }

@@ -22,7 +22,6 @@ import { Time } from "@/types/time"
 import { Jogador } from "@/types/jogador"
 import { NoDataFound } from "@/components/ui/NoDataFound"
 
-// Interface para erro de dados não encontrados
 interface DataNotFoundError extends Error {
     code: 'NOT_FOUND';
     temporada: string;
@@ -30,7 +29,6 @@ interface DataNotFoundError extends Error {
 }
 
 export default function Page() {
-    // Hooks de navegação e parâmetros
     const params = useParams()
     const router = useRouter()
     const searchParams = useSearchParams()
@@ -38,7 +36,6 @@ export default function Page() {
     const [selectedTemporada, setSelectedTemporada] = useState(temporada);
     const queryClient = useQueryClient();
 
-    // Sincroniza o estado local com a URL quando ela muda
     useEffect(() => {
         if (temporada && temporada !== selectedTemporada) {
             console.log(`Atualizando temporada no estado: ${temporada}`);
@@ -46,12 +43,10 @@ export default function Page() {
         }
     }, [temporada, selectedTemporada]);
 
-    // Hooks de scroll e transformação
     const { scrollY } = useScroll()
     const opacity = useTransform(scrollY, [0, 200], [1, 0])
     const height = useTransform(scrollY, [0, 200], [340, 50])
 
-    // Fetch de dados
     const { data: jogadores, error: jogadoresError } = useJogadores(selectedTemporada);
     const { data: times, error: timesError } = useTimes(selectedTemporada);
     const {
@@ -64,16 +59,13 @@ export default function Page() {
         selectedTemporada
     );
 
-    // Verificar se é erro de dados não encontrados
     const isNotFoundError =
         (jogadoresError && (jogadoresError as DataNotFoundError).code === 'NOT_FOUND') ||
         (timesError && (timesError as DataNotFoundError).code === 'NOT_FOUND') ||
         (jogadorError && (jogadorError as DataNotFoundError).code === 'NOT_FOUND');
 
-    // Determinar qual erro usar para mostrar informações
     const errorToShow = jogadorError || jogadoresError || timesError;
 
-    // Log para debug (apenas um useEffect)
     useEffect(() => {
         console.log('Dados do jogador:', jogadorData);
         console.log('Temporada atual:', selectedTemporada);
@@ -83,7 +75,6 @@ export default function Page() {
         console.log('É erro não encontrado?', isNotFoundError);
     }, [jogadorData, selectedTemporada, jogadoresError, timesError, jogadorError, isNotFoundError]);
 
-    // Efeito para redirecionamento por ID
     useEffect(() => {
         if (!isNaN(Number(params.jogador)) && jogadores) {
             const jogador = jogadores.find(j => j.id === Number(params.jogador))
@@ -95,7 +86,6 @@ export default function Page() {
         }
     }, [params.jogador, params.time, router, jogadores])
 
-    // Efeito para título da página
     useEffect(() => {
         if (jogadorData) {
             document.title = `${jogadorData.jogador.nome} - ${jogadorData.time.nome}`
@@ -104,34 +94,26 @@ export default function Page() {
         }
     }, [jogadorData, isNotFoundError])
 
-    // Efeito para redirecionamento quando o jogador mudou de time
     useEffect(() => {
         if (jogadorData && jogadorData.jogadorMudouDeTime) {
-            // Jogador encontrado, mas em um time diferente - redirecionar para o time correto
             const timeCorretoSlug = getTeamSlug(jogadorData.time.nome);
             const jogadorSlugCorreto = getPlayerSlug(jogadorData.jogador.nome);
-
-            // Redirecionar mantendo o parâmetro de temporada
             const targetUrl = `/${timeCorretoSlug}/${jogadorSlugCorreto}?temporada=${selectedTemporada}`;
             console.log(`Redirecionando para o time correto: ${targetUrl}`);
             router.replace(targetUrl);
         }
     }, [jogadorData, router, selectedTemporada]);
 
-    // Funções helper
     const getCamisaPath = (jogador: Jogador, currentTeam: Time): string => {
-        // Se não temos dados suficientes, retorna uma imagem padrão
         if (!currentTeam?.nome || !jogador?.camisa) {
             return '/assets/times/camisas/camisa-default.png';
         }
 
-        // Normaliza o nome do time para o formato usado nas pastas
         const timeNormalizado = currentTeam.nome.toLowerCase()
             .replace(/\s+/g, '-')
             .normalize("NFD")
             .replace(/[\u0300-\u036f]/g, "");
 
-        // Retorna o caminho correto da camisa
         return `/assets/times/camisas/${timeNormalizado}/${jogador.camisa}`;
     }
 
@@ -142,7 +124,6 @@ export default function Page() {
         return `/assets/times/logos/${time.logo}`;
     };
 
-    // Tratamento de erros e carregamento
     if (isNotFoundError) {
         const errorData = errorToShow as DataNotFoundError;
         return (
@@ -176,10 +157,7 @@ export default function Page() {
     if (!jogadorData) return <Loading />
     if (jogadorData.jogador.nome === '') return <div><SemJogador /></div>
 
-    // Desestruturação de dados
     const { jogador: currentJogador, time: currentTime } = jogadorData
-
-    // Funções de utilidade para formatação segura
     const formatNumber = (value: number) => {
         if (typeof value === 'number') {
             return value.toLocaleString('pt-BR');
@@ -195,10 +173,8 @@ export default function Page() {
 
     const experienciaAnos = calcularExperiencia(currentJogador.experiencia);
 
-    // Caminhos para assets
     const logoPath = getLogoPath(currentTime);
 
-    // Objetos seguros para estatísticas
     const passe = currentJogador.estatisticas?.passe || {};
     const passeSafe = {
         passes_completos: passe.passes_completos || 0,
@@ -362,14 +338,12 @@ export default function Page() {
                                 label="TEMPORADA"
                                 value={selectedTemporada}
                                 onChange={(novaTemporada) => {
-                                    // Force a limpeza do cache e refetch
                                     queryClient.invalidateQueries({ queryKey: queryKeys.jogadores(selectedTemporada) });
                                     queryClient.invalidateQueries({ queryKey: queryKeys.times(selectedTemporada) });
 
                                     console.log(`Alterando temporada para: ${novaTemporada}`);
                                     setSelectedTemporada(novaTemporada);
 
-                                    // Constrói a URL com base no slug do time e jogador atual
                                     const timeSlug = getTeamSlug(currentTime.nome || '');
                                     const jogadorSlug = getPlayerSlug(currentJogador.nome || '');
 

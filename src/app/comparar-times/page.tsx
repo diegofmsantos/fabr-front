@@ -1,4 +1,3 @@
-// src/app/comparar-times/page.tsx (REFATORADA)
 "use client"
 
 import React, { useState, useEffect } from 'react';
@@ -17,20 +16,16 @@ export default function CompararTimesPage() {
     const router = useRouter();
     const searchParams = useSearchParams();
     
-    // Estados principais
     const [temporada, setTemporada] = useState(searchParams?.get('temporada') || '2024');
     const [selectedTeams, setSelectedTeams] = useState<{ time1Id?: number, time2Id?: number }>({});
     const [comparisonData, setComparisonData] = useState<any>(null);
     const [loadingComparison, setLoadingComparison] = useState(false);
     const [activeTab, setActiveTab] = useState<'estatisticas' | 'graficos'>('estatisticas');
 
-    // Buscar lista de times
     const { data: times = [], isLoading: loadingTimes } = useTimes(temporada);
 
-    // Verificar se os times estão selecionados
     const teamsSelected = !!(selectedTeams.time1Id && selectedTeams.time2Id);
 
-    // Efeito para inicializar a seleção com base nos parâmetros da URL
     useEffect(() => {
         const time1Id = searchParams?.get('time1');
         const time2Id = searchParams?.get('time2');
@@ -39,7 +34,6 @@ export default function CompararTimesPage() {
         if (time2Id) selectTeam('time2Id', Number(time2Id));
     }, [searchParams]);
 
-    // Efeito para carregar dados quando os times forem selecionados
     useEffect(() => {
         if (selectedTeams.time1Id && selectedTeams.time2Id) {
             loadComparisonData();
@@ -47,7 +41,6 @@ export default function CompararTimesPage() {
         }
     }, [selectedTeams, temporada]);
 
-    // Função para atualizar URL
     const updateURL = () => {
         if (!selectedTeams.time1Id || !selectedTeams.time2Id) return;
 
@@ -59,7 +52,6 @@ export default function CompararTimesPage() {
         router.replace(`/comparar-times?${params.toString()}`, { scroll: false });
     };
 
-    // Função para carregar dados de comparação
     const loadComparisonData = async () => {
         if (!selectedTeams.time1Id || !selectedTeams.time2Id) return;
 
@@ -131,7 +123,6 @@ export default function CompararTimesPage() {
         }
     };
 
-    // Função para agregar estatísticas de um time
     const agregarEstatisticas = (jogadores: any[]) => {
         const stats = {
             passe: {
@@ -162,19 +153,16 @@ export default function CompararTimesPage() {
         jogadores.forEach(jogador => {
             if (!jogador.estatisticas) return;
 
-            // Agregar cada categoria
             Object.entries(stats).forEach(([categoria, categoriaStats]) => {
                 const jogadorStats = jogador.estatisticas[categoria];
                 if (!jogadorStats) return;
 
                 Object.keys(categoriaStats).forEach(stat => {
                     if (stat === 'fg_mais_longo') {
-                        // Para fg_mais_longo, pegar o maior valor
                         if ((jogadorStats[stat] || 0) > stats.kicker.fg_mais_longo) {
                             stats.kicker.fg_mais_longo = jogadorStats[stat] || 0;
                         }
                     } else {
-                        // Para outras stats, somar
                         (categoriaStats as any)[stat] += jogadorStats[stat] || 0;
                     }
                 });
@@ -184,7 +172,6 @@ export default function CompararTimesPage() {
         return stats;
     };
 
-    // Função para encontrar destaques de jogadores
     const encontrarDestaques = (jogadores: any[]) => {
         return {
             ataque: {
@@ -206,7 +193,6 @@ export default function CompararTimesPage() {
         };
     };
 
-    // Função para encontrar o melhor jogador em uma categoria/estatística
     const melhorJogador = (jogadores: any[], categoria: string, estatistica: string) => {
         let melhor = null;
         let melhorValor = 0;
@@ -233,14 +219,12 @@ export default function CompararTimesPage() {
         return melhor;
     };
 
-    // Função para criar destaques vazios (fallback)
     const createEmptyDestaques = () => ({
         ataque: { passador: null, corredor: null, recebedor: null, retornador: null },
         defesa: { tackler: null, rusher: null, interceptador: null, desviador: null },
         specialTeams: { kicker: null, punter: null }
     });
 
-    // Função para selecionar um time
     const selectTeam = (position: 'time1Id' | 'time2Id', teamId: number) => {
         setSelectedTeams(prev => ({
             ...prev,
@@ -248,7 +232,6 @@ export default function CompararTimesPage() {
         }));
     };
 
-    // Função para trocar os times de posição
     const swapTeams = () => {
         setSelectedTeams(prev => ({
             time1Id: prev.time2Id,
@@ -256,7 +239,6 @@ export default function CompararTimesPage() {
         }));
     };
 
-    // Função para lidar com mudança de temporada
     const handleTemporadaChange = (novaTemporada: string) => {
         setTemporada(novaTemporada);
         const params = new URLSearchParams(searchParams?.toString() || '');
@@ -270,7 +252,6 @@ export default function CompararTimesPage() {
 
     return (
         <div className="min-h-screen bg-[#ECECEC] py-24 px-4 max-w-[1200px] mx-auto xl:pt-10 xl:ml-[600px]">
-            {/* Cabeçalho */}
             <div className="flex items-center mb-6">
                 <Link href="/" className="mr-4">
                     <button className="rounded-full text-xs text-[#63E300] p-2 w-8 h-8 flex justify-center items-center bg-[#373740] hover:opacity-80 z-50">
@@ -280,7 +261,6 @@ export default function CompararTimesPage() {
                 <h1 className="text-4xl font-extrabold italic tracking-[-2px]">COMPARAR TIMES</h1>
             </div>
 
-            {/* Seletor de temporada */}
             <div className="w-full mt-4">
                 <SelectFilter
                     label="TEMPORADA"
@@ -293,7 +273,6 @@ export default function CompararTimesPage() {
                 />
             </div>
 
-            {/* Componente de seleção de times */}
             <TeamSelector
                 times={times}
                 selectedTeams={selectedTeams}
@@ -301,7 +280,6 @@ export default function CompararTimesPage() {
                 onSwapTeams={swapTeams}
             />
 
-            {/* Loading durante a comparação */}
             {loadingComparison && teamsSelected && (
                 <div className="mt-8 text-center">
                     <div className="w-12 h-12 border-t-2 border-blue-500 border-solid rounded-full animate-spin mx-auto mb-4"></div>
@@ -309,16 +287,13 @@ export default function CompararTimesPage() {
                 </div>
             )}
 
-            {/* Resultado da comparação */}
             {comparisonData && teamsSelected && !loadingComparison && (
                 <div className="mt-8">
-                    {/* Cabeçalho da comparação */}
                     <TeamComparisonHeader
                         time1={comparisonData.teams.time1}
                         time2={comparisonData.teams.time2}
                     />
 
-                    {/* Abas para alternar entre estatísticas e gráficos */}
                     <div className="flex border-b border-gray-200 mt-8 mb-8">
                         <button
                             className={`py-2 px-4 font-bold text-lg ${activeTab === 'estatisticas' ? 'border-b-4 border-[#272731] text-[#272731]' : 'text-gray-500 hover:text-gray-700'}`}
@@ -335,7 +310,6 @@ export default function CompararTimesPage() {
                         </button>
                     </div>
 
-                    {/* Conteúdo baseado na aba selecionada */}
                     {activeTab === 'estatisticas' ? (
                         <StatisticsComparison comparisonData={comparisonData} />
                     ) : (
@@ -344,7 +318,6 @@ export default function CompararTimesPage() {
                 </div>
             )}
 
-            {/* Mensagem para selecionar times */}
             {!teamsSelected && (
                 <div className="mt-8 bg-white p-8 rounded-lg text-center">
                     <h2 className="text-xl font-bold mb-4">Selecione dois times para comparar</h2>

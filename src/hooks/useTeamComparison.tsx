@@ -3,10 +3,8 @@ import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useTimes, useJogadores } from '@/hooks/queries';
 
-// Flag para dados locais
 const USE_LOCAL_DATA = process.env.NEXT_PUBLIC_USE_LOCAL_DATA === 'true'
 
-// Função para processar comparação localmente
 const processLocalComparison = (
   times: any[],
   jogadores: any[],
@@ -24,11 +22,9 @@ const processLocalComparison = (
   const jogadoresTime1 = jogadores.filter(j => j.timeId === time1Id)
   const jogadoresTime2 = jogadores.filter(j => j.timeId === time2Id)
 
-  // Processar estatísticas agregadas por time
   const estatisticasTime1 = agregarEstatisticas(jogadoresTime1)
   const estatisticasTime2 = agregarEstatisticas(jogadoresTime2)
 
-  // Encontrar destaques por time
   const destaquesTime1 = encontrarDestaques(jogadoresTime1)
   const destaquesTime2 = encontrarDestaques(jogadoresTime2)
 
@@ -58,7 +54,6 @@ const processLocalComparison = (
   }
 }
 
-// Função para agregar estatísticas
 const agregarEstatisticas = (jogadores: any[]) => {
   const estatisticas = {
     passe: {
@@ -111,7 +106,6 @@ const agregarEstatisticas = (jogadores: any[]) => {
   }
 
   jogadores.forEach(jogador => {
-    // Somar estatísticas de passe
     estatisticas.passe.jardas_de_passe += jogador.estatisticas.passe?.jardas_de_passe || 0
     estatisticas.passe.passes_completos += jogador.estatisticas.passe?.passes_completos || 0
     estatisticas.passe.passes_tentados += jogador.estatisticas.passe?.passes_tentados || 0
@@ -120,24 +114,20 @@ const agregarEstatisticas = (jogadores: any[]) => {
     estatisticas.passe.sacks_sofridos += jogador.estatisticas.passe?.sacks_sofridos || 0
     estatisticas.passe.fumble_de_passador += jogador.estatisticas.passe?.fumble_de_passador || 0
 
-    // Somar estatísticas de corrida
     estatisticas.corrida.jardas_corridas += jogador.estatisticas.corrida?.jardas_corridas || 0
     estatisticas.corrida.corridas += jogador.estatisticas.corrida?.corridas || 0
     estatisticas.corrida.tds_corridos += jogador.estatisticas.corrida?.tds_corridos || 0
     estatisticas.corrida.fumble_de_corredor += jogador.estatisticas.corrida?.fumble_de_corredor || 0
 
-    // Somar estatísticas de recepção
     estatisticas.recepcao.jardas_recebidas += jogador.estatisticas.recepcao?.jardas_recebidas || 0
     estatisticas.recepcao.recepcoes += jogador.estatisticas.recepcao?.recepcoes || 0
     estatisticas.recepcao.alvo += jogador.estatisticas.recepcao?.alvo || 0
     estatisticas.recepcao.tds_recebidos += jogador.estatisticas.recepcao?.tds_recebidos || 0
 
-    // Somar estatísticas de retorno
     estatisticas.retorno.jardas_retornadas += jogador.estatisticas.retorno?.jardas_retornadas || 0
     estatisticas.retorno.retornos += jogador.estatisticas.retorno?.retornos || 0
     estatisticas.retorno.td_retornados += jogador.estatisticas.retorno?.td_retornados || 0
 
-    // Somar estatísticas de defesa
     estatisticas.defesa.tackles_totais += jogador.estatisticas.defesa?.tackles_totais || 0
     estatisticas.defesa.tackles_for_loss += jogador.estatisticas.defesa?.tackles_for_loss || 0
     estatisticas.defesa.sacks_forcado += jogador.estatisticas.defesa?.sacks_forcado || 0
@@ -147,18 +137,15 @@ const agregarEstatisticas = (jogadores: any[]) => {
     estatisticas.defesa.safety += jogador.estatisticas.defesa?.safety || 0
     estatisticas.defesa.td_defensivo += jogador.estatisticas.defesa?.td_defensivo || 0
 
-    // Somar estatísticas de kicker
     estatisticas.kicker.fg_bons += jogador.estatisticas.kicker?.fg_bons || 0
     estatisticas.kicker.tentativas_de_fg += jogador.estatisticas.kicker?.tentativas_de_fg || 0
     estatisticas.kicker.xp_bons += jogador.estatisticas.kicker?.xp_bons || 0
     estatisticas.kicker.tentativas_de_xp += jogador.estatisticas.kicker?.tentativas_de_xp || 0
     
-    // Para fg_mais_longo, pegar o maior valor
     if ((jogador.estatisticas.kicker?.fg_mais_longo || 0) > estatisticas.kicker.fg_mais_longo) {
       estatisticas.kicker.fg_mais_longo = jogador.estatisticas.kicker?.fg_mais_longo || 0
     }
 
-    // Somar estatísticas de punter
     estatisticas.punter.punts += jogador.estatisticas.punter?.punts || 0
     estatisticas.punter.jardas_de_punt += jogador.estatisticas.punter?.jardas_de_punt || 0
   })
@@ -166,7 +153,6 @@ const agregarEstatisticas = (jogadores: any[]) => {
   return estatisticas
 }
 
-// Função para encontrar destaques
 const encontrarDestaques = (jogadores: any[]) => {
   return {
     ataque: {
@@ -188,7 +174,6 @@ const encontrarDestaques = (jogadores: any[]) => {
   }
 }
 
-// Função para encontrar melhor jogador
 const melhorJogador = (jogadores: any[], categoria: string, estatistica: string) => {
   let melhor = null
   let melhorValor = 0
@@ -219,14 +204,12 @@ const melhorJogador = (jogadores: any[], categoria: string, estatistica: string)
   return melhor
 }
 
-// Hook principal
 export function useTeamComparison() {
   const [selectedTeams, setSelectedTeams] = useState<{time1Id?: number, time2Id?: number}>({});
   const [temporada, setTemporada] = useState('2024');
   
   const teamsSelected = !!(selectedTeams.time1Id && selectedTeams.time2Id);
   
-  // Buscar dados base
   const { data: times = [] } = useTimes(temporada);
   const { data: jogadores = [] } = useJogadores(temporada);
 
@@ -236,7 +219,6 @@ export function useTeamComparison() {
       if (!teamsSelected) return null;
       
       if (USE_LOCAL_DATA) {
-        // Processar dados localmente
         return processLocalComparison(times, jogadores, selectedTeams.time1Id!, selectedTeams.time2Id!, temporada);
       } else {
         // Buscar da API
@@ -253,7 +235,6 @@ export function useTeamComparison() {
     staleTime: 1000 * 60 * 5,
   });
   
-  // Função para selecionar um time
   const selectTeam = (position: 'time1Id' | 'time2Id', teamId: number) => {
     setSelectedTeams(prev => ({
       ...prev,
@@ -261,7 +242,6 @@ export function useTeamComparison() {
     }));
   };
   
-  // Função para mudar a temporada
   const changeTemporada = (newTemporada: string) => {
     if (newTemporada !== '2024' && newTemporada !== '2025') {
       console.warn(`Temporada inválida: ${newTemporada}, usando 2024`);
@@ -270,7 +250,6 @@ export function useTeamComparison() {
     setTemporada(newTemporada);
   };
   
-  // Função para trocar os times
   const swapTeams = () => {
     setSelectedTeams(prev => ({
       time1Id: prev.time2Id,

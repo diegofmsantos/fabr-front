@@ -1,4 +1,3 @@
-// src/components/Comparar/TeamSelector.tsx
 "use client"
 
 import React from 'react';
@@ -22,9 +21,7 @@ export const TeamSelector: React.FC<TeamSelectorProps> = ({
 
     return (
         <div>
-            {/* Seleção de times */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
-                {/* Time 1 */}
                 <div className="bg-white rounded-lg p-4">
                     <label className="block mb-2 font-bold">Time 1</label>
                     <select
@@ -45,7 +42,6 @@ export const TeamSelector: React.FC<TeamSelectorProps> = ({
                     </select>
                 </div>
 
-                {/* Time 2 */}
                 <div className="bg-white rounded-lg p-4">
                     <label className="block mb-2 font-bold">Time 2</label>
                     <select
@@ -67,7 +63,6 @@ export const TeamSelector: React.FC<TeamSelectorProps> = ({
                 </div>
             </div>
 
-            {/* Botão para inverter times */}
             {teamsSelected && (
                 <div className="flex justify-center mt-4">
                     <button

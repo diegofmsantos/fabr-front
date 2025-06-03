@@ -9,7 +9,7 @@ import { RankingLayout } from "@/components/Ranking/RankingLayout"
 import { RankingGroup } from "@/components/Ranking/RankingGroup"
 import { StatCardsGrid } from "@/components/Stats/StatCardsGrid"
 import { StatCategoryButtons } from "@/components/ui/StatCategoryButtons"
-import { getStatsByCategory } from "@/utils/helpers/categoryHelpers"
+import { getCategoryTitle, getStatsByCategory } from "@/utils/helpers/categoryHelpers"
 import { StatKey } from "@/types/Stats"
 import { calculateStat, compareValues, shouldIncludePlayer } from "@/utils/services/StatsServices"
 
@@ -37,29 +37,13 @@ export default function Page() {
         fetchData()
     }, [])
 
-
-    const getCategoryTitle = (category: string): string => {
-        switch (category) {
-            case "passe": return "PASSE"
-            case "corrida": return "CORRIDA"
-            case "recepcao": return "RECEPÇÃO"
-            case "retorno": return "RETORNO"
-            case "defesa": return "DEFESA"
-            case "chute": return "CHUTE"
-            case "punt": return "PUNT"
-            default: return ""
-        }
-    }
-
     if (loading) {
         return <Loading />
     }
 
-    // Obtém as estatísticas para a categoria atual
     const currentStats = getStatsByCategory(selectedCategory)
     const categoryTitle = getCategoryTitle(selectedCategory)
 
-    // Função simplificada que retorna objetos no formato que o RankingCard espera
     const prepareStatsForCards = (
         players: Jogador[],
         times: Time[],
@@ -67,7 +51,6 @@ export default function Page() {
         categoryTitle: string
     ) => {
         return currentStats.map(stat => {
-            // Filtra jogadores para esta estatística
             const filteredPlayers = players
                 .filter(player => shouldIncludePlayer(player, stat.key, categoryTitle))
                 .sort((a, b) => {
@@ -77,7 +60,6 @@ export default function Page() {
                 })
                 .slice(0, 5);
 
-            // Monta os jogadores no formato que RankingCard espera
             const formattedPlayers = filteredPlayers.map((player, index) => {
                 const teamInfo = times.find(t => t.id === player.timeId) || {};
                 const value = calculateStat(player, stat.key);
@@ -105,7 +87,6 @@ export default function Page() {
     return (
         <RankingLayout initialFilter="jogadores">
             <div className="pb-12 bg-[#ECECEC]">
-                {/* Botões de categoria para todas as telas */}
                 <div className="px-4 pt-8 lg:px-8 xl:px-12 xl:max-w-5xl max-w-7xl mx-auto xl:ml-20">
                     <StatCategoryButtons
                         selectedCategory={selectedCategory}
@@ -113,7 +94,6 @@ export default function Page() {
                     />
                 </div>
 
-                {/* Visualização em grid para todas as telas */}
                 <div className="px-4 lg:px-8 xl:px-12 max-w-7xl mx-auto xl:ml-20">
                     <StatCardsGrid // @ts-ignore
                         stats={prepareStatsForCards(players, times, currentStats, categoryTitle)}
@@ -121,7 +101,6 @@ export default function Page() {
                     />
                 </div>
 
-                {/* Visualização em carrossel apenas para telas menores */}
                 <div className="lg:hidden mb-20">
                     <RankingGroup
                         title="PASSE"

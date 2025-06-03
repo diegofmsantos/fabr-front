@@ -30,7 +30,6 @@ export const RankingFilters: React.FC<RankingFiltersProps> = ({ currentFilter, o
     const searchParams = useSearchParams();
     const statParam = searchParams.get('stat');
 
-    // Define as URLs baseado em se está na página de stats ou ranking
     const jogadoresUrl = isStatsPage ? `/ranking/stats?stat=${statParam}` : "/ranking";
     const timesUrl = isStatsPage ? `/ranking/times/stats?stat=${statParam}` : "/ranking/times";
 

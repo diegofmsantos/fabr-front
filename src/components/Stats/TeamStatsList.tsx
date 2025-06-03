@@ -7,8 +7,8 @@ import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons'
 import { NoStats } from '../ui/NoStats'
-import { getCategoryFromKey } from '../Ranking/TimeRankingGroup'
-import { StatsFormatter } from '@/utils/services/FormatterService'
+import { normalizeForFilePath, StatsFormatter } from '@/utils/services/FormatterService'
+import { getCategoryFromKey } from '@/utils/helpers/categoryHelpers'
 
 interface TeamStatsListProps {
   players: Jogador[]
@@ -118,15 +118,6 @@ export const TeamStatsList: React.FC<TeamStatsListProps> = ({ players, times, st
     }
   }
 
-  const normalizeForFilePath = (input: string): string => {
-    return input
-      .toLowerCase()
-      .replace(/\s+/g, "-")
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .replace(/[^a-z0-9-]/g, "");
-  };
-
   const rankedTeams = times
     .map(time => ({
       time,
@@ -141,7 +132,6 @@ export const TeamStatsList: React.FC<TeamStatsListProps> = ({ players, times, st
     .sort((a, b) => {
       if (a.value === null || b.value === null) return 0
       if (b.value === a.value) {
-        // @ts-ignore
         return a.time.nome.localeCompare(b.time.nome)
       }
       return b.value - a.value

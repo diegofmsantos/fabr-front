@@ -1,14 +1,5 @@
 import React from 'react';
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer
-} from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 interface ComparisonChartProps {
   title: string;
@@ -21,14 +12,7 @@ interface ComparisonChartProps {
   labels: string[];
 }
 
-export const ComparisonChart: React.FC<ComparisonChartProps> = ({
-  title,
-  data,
-  keys,
-  colors,
-  labels
-}) => {
-  // Custom tooltip para formatar os valores
+export const ComparisonChart: React.FC<ComparisonChartProps> = ({ title, data, keys, colors, labels }) => {
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (

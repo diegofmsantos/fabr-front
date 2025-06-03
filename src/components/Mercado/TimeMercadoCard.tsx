@@ -1,45 +1,14 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-
-interface Transferencia {
-  id: number;
-  jogadorNome: string;
-  timeOrigemId?: number;
-  timeOrigemNome?: string;
-  timeOrigemSigla?: string;
-  timeDestinoId: number;
-  timeDestinoNome?: string;
-  timeDestinoSigla?: string;
-  novaPosicao?: string | null;
-  novoSetor?: string | null;
-  novoNumero?: number | null;
-  novaCamisa?: string | null;
-  data: string;
-}
-
-interface TimeMercadoCardProps {
-  timeNome: string;
-  jogadoresEntrando: Transferencia[];
-  jogadoresSaindo: Transferencia[];
-}
+import { normalizeForFilePath } from '@/utils/services/FormatterService';
+import { TimeMercadoCardProps } from '@/types/time';
 
 export const TimeMercadoCard: React.FC<TimeMercadoCardProps> = ({
   timeNome,
   jogadoresEntrando,
   jogadoresSaindo
 }) => {
-  // Função para normalizar nomes de time para usar em paths de arquivos
-  const normalizeForFilePath = (input: string): string => {
-    if (!input) return '';
-    
-    return input
-      .toLowerCase()
-      .replace(/\s+/g, '-')
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .replace(/[^a-z0-9-]/g, '');
-  }
 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden">

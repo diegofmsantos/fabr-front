@@ -28,3 +28,25 @@ export type Time = {
   titulos?: Titulos[]
   jogadores?: Jogador[]
 }
+
+export interface Transferencia {
+  id: number;
+  jogadorNome: string;
+  timeOrigemId?: number;
+  timeOrigemNome?: string;
+  timeOrigemSigla?: string;
+  timeDestinoId: number;
+  timeDestinoNome?: string;
+  timeDestinoSigla?: string;
+  novaPosicao?: string | null;
+  novoSetor?: string | null;
+  novoNumero?: number | null;
+  novaCamisa?: string | null;
+  data: string;
+}
+
+export interface TimeMercadoCardProps {
+  timeNome: string;
+  jogadoresEntrando: Transferencia[];
+  jogadoresSaindo: Transferencia[];
+}

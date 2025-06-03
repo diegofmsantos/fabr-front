@@ -1,4 +1,5 @@
 import { Jogador } from "@/types/jogador"
+import { StatKey } from "@/types/Stats"
 import { Time } from "@/types/time"
 
 export const createSlug = (text: string): string => {
@@ -23,7 +24,6 @@ export const createSlug = (text: string): string => {
         'Ç': 'C',
     }
 
-    // Remove acentos e caracteres especiais
     const normalized = text
         .split('')
         .map(char => charMap[char as keyof typeof charMap] || char)
@@ -33,15 +33,12 @@ export const createSlug = (text: string): string => {
         .replace(/\s+/g, '-')
         .replace(/-+/g, '-');
 
-    // Divide a string em palavras
     return normalized
         .split('-')
         .map(word => {
-            // Se a palavra tem 2 letras e é toda em maiúsculo (como FA, HP)
             if (word.length === 2 && word.toUpperCase() === word) {
                 return word.toUpperCase()
             }
-            // Caso contrário, capitaliza apenas a primeira letra
             return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
         })
         .join('-')
@@ -59,7 +56,6 @@ export const getPlayerSlug = (playerName: string | undefined): string => {
 
 export const getOriginalName = (teams: Time[], slug: string): string | null => {
     if (!slug) return null
-    // Normaliza o slug recebido para garantir consistência na comparação
     const normalizedSlug = createSlug(slug)
     const team = teams.find(team => getTeamSlug(team.nome) === normalizedSlug)
     return team?.nome || null
@@ -76,17 +72,12 @@ export const findPlayerBySlug = (
     const normalizedPlayerSlug = createSlug(playerSlug);
     const normalizedTeamSlug = createSlug(timeSlug);
 
-    // Primeiro, tenta encontrar o jogador exatamente como antes
-    // (mesmo nome de jogador e mesmo time)
     const jogadorNoTimeAtual = jogadores.find(jogador => {
-        // Verifica se o nome do jogador corresponde
         const playerMatches = getPlayerSlug(jogador.nome) === normalizedPlayerSlug;
 
-        // Pega o time do jogador e verifica se corresponde
         const playerTeam = times.find(t => t.id === jogador.timeId);
         const teamMatches = playerTeam && getTeamSlug(playerTeam.nome) === normalizedTeamSlug;
 
-        // Retorna verdadeiro apenas se tanto o jogador quanto o time corresponderem
         return playerMatches && teamMatches;
     });
 
@@ -94,9 +85,49 @@ export const findPlayerBySlug = (
         return jogadorNoTimeAtual;
     }
 
-    // Se não encontrou o jogador no time atual, procura apenas pelo slug do jogador
-    // (isso encontrará o jogador mesmo que ele tenha mudado de time)
-    return jogadores.find(jogador => 
+    return jogadores.find(jogador =>
         getPlayerSlug(jogador.nome) === normalizedPlayerSlug
     ) || null;
 }
+
+export const normalizeValue = (value: string | number | null, statKey: StatKey): string => {
+    if (value === null) return 'N/A'
+
+    if (['fg_11_20', 'fg_21_30', 'fg_31_40', 'fg_41_50'].includes(statKey as string)) return String(value)
+
+    if (typeof value === 'string') return value
+
+    const percentageStats = ['passes_percentual', 'extra_points', 'field_goals']
+    const averageStats = ['jardas_media', 'jardas_corridas_media', 'jardas_recebidas_media', 'jardas_retornadas_media', 'jardas_punt_media']
+
+    if (percentageStats.includes(statKey as string)) {
+        return `${Math.round(value)}%`;
+    } else if (averageStats.includes(statKey as string)) {
+        return value.toFixed(1);
+    }
+    return Math.round(value).toString();
+}
+
+export const formatStatValue = (value: number | null, statKey: string, title: string): string => {
+    if (value === null) return 'N/A';
+
+    if (
+        statKey.includes('percentual') ||
+        statKey === 'field_goals' ||
+        statKey === 'extra_points' ||
+        title.includes('(%)') ||
+        title === 'FG(%)' ||
+        title === 'XP(%)'
+    ) {
+        return `${Math.round(value)}%`;
+    }
+
+    if (
+        statKey.includes('media') ||
+        title.includes('(AVG)')
+    ) {
+        return value.toFixed(1).replace('.', ',');
+    }
+
+    return Math.round(value).toLocaleString('pt-BR');
+};

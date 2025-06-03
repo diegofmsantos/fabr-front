@@ -1,4 +1,3 @@
-// src/components/Comparar/StatisticsComparison.tsx
 "use client"
 
 import React from 'react';
@@ -14,7 +13,6 @@ interface StatComparisonCardProps {
 const StatComparisonCard: React.FC<StatComparisonCardProps> = ({
     title, stat1, stat2, color1, color2
 }) => {
-    // Determinar qual valor é maior para destacar
     const num1 = parseFloat(stat1.replace(/[^0-9.]/g, ''));
     const num2 = parseFloat(stat2.replace(/[^0-9.]/g, ''));
 
@@ -56,7 +54,6 @@ interface PlayerComparisonCardProps {
 const PlayerComparisonCard: React.FC<PlayerComparisonCardProps> = ({
     title, player1, player2, team1, team2, statKey, statCategory
 }) => {
-    // Obter os valores estatísticos
     const getValue = (player: any) => {
         if (!player || !player.estatisticas) return 'N/A';
         const stats = player.estatisticas[statCategory];
@@ -67,7 +64,6 @@ const PlayerComparisonCard: React.FC<PlayerComparisonCardProps> = ({
     const value1 = getValue(player1);
     const value2 = getValue(player2);
 
-    // Determinar qual valor é melhor
     const isFirstBetter = value1 !== 'N/A' && value2 !== 'N/A' && value1 > value2;
     const isSecondBetter = value1 !== 'N/A' && value2 !== 'N/A' && value2 > value1;
     const isEqual = value1 === value2 && value1 !== 'N/A';
@@ -76,7 +72,6 @@ const PlayerComparisonCard: React.FC<PlayerComparisonCardProps> = ({
         <div className="bg-gray-50 rounded-lg p-3 shadow-sm">
             <h4 className="text-md font-bold mb-2">{title}</h4>
             <div className="grid grid-cols-2 gap-2">
-                {/* Jogador Time 1 */}
                 <div className={`p-2 rounded-md ${isFirstBetter ? 'bg-green-100' : isEqual ? 'bg-gray-200' : ''}`}>
                     {player1 ? (
                         <div className="flex items-center">
@@ -90,7 +85,6 @@ const PlayerComparisonCard: React.FC<PlayerComparisonCardProps> = ({
                     )}
                 </div>
 
-                {/* Jogador Time 2 */}
                 <div className={`p-2 rounded-md ${isSecondBetter ? 'bg-green-100' : isEqual ? 'bg-gray-200' : ''}`}>
                     {player2 ? (
                         <div className="flex items-center">
@@ -183,7 +177,6 @@ export const StatisticsComparison: React.FC<StatisticsComparisonProps> = ({ comp
                 </div>
             </div>
 
-            {/* Seção de Estatísticas de Corrida */}
             <div className="mt-8">
                 <h2 className="text-2xl font-bold mb-4 bg-[#373740] text-white p-2 inline-block rounded-md">CORRIDA</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -221,7 +214,6 @@ export const StatisticsComparison: React.FC<StatisticsComparisonProps> = ({ comp
                 </div>
             </div>
 
-            {/* Seção de Estatísticas de Recepção */}
             <div className="mt-8">
                 <h2 className="text-2xl font-bold mb-4 bg-[#373740] text-white p-2 inline-block rounded-md">RECEPÇÃO</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -251,7 +243,6 @@ export const StatisticsComparison: React.FC<StatisticsComparisonProps> = ({ comp
                 </div>
             </div>
 
-            {/* Seção de Estatísticas de Retorno */}
             <div className="mt-8">
                 <h2 className="text-2xl font-bold mb-4 bg-[#373740] text-white p-2 inline-block rounded-md">RETORNO</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -281,7 +272,6 @@ export const StatisticsComparison: React.FC<StatisticsComparisonProps> = ({ comp
                 </div>
             </div>
 
-            {/* Seção de Estatísticas de Defesa */}
             <div className="mt-8">
                 <h2 className="text-2xl font-bold mb-4 bg-[#373740] text-white p-2 inline-block rounded-md">DEFESA</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -351,7 +341,6 @@ export const StatisticsComparison: React.FC<StatisticsComparisonProps> = ({ comp
                 </div>
             </div>
 
-            {/* Seção de Estatísticas de Kicker */}
             <div className="mt-8">
                 <h2 className="text-2xl font-bold mb-4 bg-[#373740] text-white p-2 inline-block rounded-md">CHUTE</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -395,7 +384,6 @@ export const StatisticsComparison: React.FC<StatisticsComparisonProps> = ({ comp
                 </div>
             </div>
 
-            {/* Seção de Estatísticas de Punter */}
             <div className="mt-8">
                 <h2 className="text-2xl font-bold mb-4 bg-[#373740] text-white p-2 inline-block rounded-md">PUNT</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -431,7 +419,6 @@ export const StatisticsComparison: React.FC<StatisticsComparisonProps> = ({ comp
                 </div>
             </div>
 
-            {/* Jogadores Destaque */}
             <div className="mt-8">
                 <h2 className="text-2xl font-bold mb-4 bg-[#373740] text-white p-2 inline-block rounded-md">DESTAQUES</h2>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -471,7 +458,6 @@ export const StatisticsComparison: React.FC<StatisticsComparisonProps> = ({ comp
                         </div>
                     </div>
 
-                    {/* Destaque Defesa */}
                     <div className="bg-white rounded-lg p-6 shadow-md">
                         <h3 className="text-xl font-bold mb-4">Melhores da Defesa</h3>
                         <div className="grid grid-cols-1 gap-4">

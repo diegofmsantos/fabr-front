@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons'
 import { StatsExplicacao } from './StatsExplicacao'
+import { normalizeForFilePath } from '@/utils/services/FormatterService'
 
 interface PlayerStats {
   player: any
@@ -24,26 +25,12 @@ interface StatsTierProps {
 }
 
 const StatsTier: React.FC<StatsTierProps> = ({ title, players, backgroundColor = 'bg-black', statsType, isLastTier = false }) => {
-  const normalizeForFilePath = (input: string): string =>
-    input.toLowerCase()
-      .replace(/\s+/g, '-')
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .replace(/[^a-z0-9-]/g, '')
 
   const getShirtPath = (team: string, camisa: string): string => {
     const normalizedTeam = normalizeForFilePath(team);
     return team && team !== "time-desconhecido" && camisa
       ? `/assets/times/camisas/${normalizedTeam}/${camisa}`
       : "/assets/times/camisas/camisa-default.png"
-  }
-
-  const formatNumber = (value: string | number): string => {
-    if (typeof value === 'number') {
-      return value.toLocaleString('pt-BR')
-    }
-    const num = parseInt(value);
-    return isNaN(num) ? value : num.toLocaleString('pt-BR')
   }
 
   if (players.length === 0) {
