@@ -4,7 +4,7 @@ import { Time } from '@/types/time';
 import { RankingCard } from '@/components/Ranking/RankingCard';
 import { StatKey } from '@/types/Stats';
 import { calculateStat, compareValues, shouldIncludePlayer } from '@/utils/services/StatsServices';
-import { normalizeForFilePath } from '@/utils/services/FormatterService';
+import { ImageService } from '@/utils/services/ImageService';
 
 interface PlayerCardProps {
   id: number;
@@ -58,7 +58,7 @@ export const prepareStatsForCards = (
         value: value !== null ? String(value) : 'N/A',
         camisa: player.camisa,
         teamColor: index === 0 ? teamInfo.cor : undefined,
-        teamLogo: `/assets/times/logos/${normalizeForFilePath(teamInfo.nome || '')}.png`,
+        teamLogo: ImageService.getTeamLogo(teamInfo.nome || ''),
         isFirst: index === 0
       };
     });

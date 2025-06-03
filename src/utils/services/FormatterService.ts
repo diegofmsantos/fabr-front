@@ -1,14 +1,5 @@
 import { StatConfig, StatResult } from "../constants/statMappings";
 
-export const normalizeForFilePath = (input: string): string => {
-    return input
-        .toLowerCase()
-        .replace(/\\s+/g, "-")
-        .normalize("NFD")
-        .replace(/[\\u0300-\\u036f]/g, "")
-        .replace(/[^a-z0-9-]/g, "");
-};
-
 export class StatsFormatter {
     static format(value: number | string | null, config: StatConfig): string {
         if (value === null) return 'N/A'
@@ -77,4 +68,4 @@ export const formatStatDisplay = (statResult: StatResult, stat: StatConfig): str
     }
 
     return Math.round(statResult.value).toString()
-};
+}

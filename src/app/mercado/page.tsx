@@ -8,7 +8,7 @@ import { Loading } from '@/components/ui/Loading'
 import { SelectFilter } from '@/components/ui/SelectFilter'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
-import { normalizeForFilePath } from '@/utils/services/FormatterService'
+import { ImageService } from '@/utils/services/ImageService'
 
 interface Transferencia {
   id: number
@@ -52,19 +52,19 @@ export default function MercadoPage() {
     loadTransferencias()
   }, [temporadaOrigem, temporadaDestino])
 
-  const transferenciasAgrupadas = transferencias.reduce((acc, transferencia) => {
+  const transferenciasAgrupadas = (transferencias || []).reduce((acc, transferencia) => {
     const timeDestino = transferencia.timeDestinoNome || 'Desconhecido';
-    
+
     if (!acc[timeDestino]) {
       acc[timeDestino] = [];
     }
-    
+
     acc[timeDestino].push(transferencia);
     return acc;
   }, {} as Record<string, Transferencia[]>);
 
   const timesOrdenados = Object.entries(transferenciasAgrupadas)
-    .sort(([, transferenciasA], [, transferenciasB]) => 
+    .sort(([, transferenciasA], [, transferenciasB]) =>
       transferenciasB.length - transferenciasA.length
     );
 
@@ -131,7 +131,7 @@ export default function MercadoPage() {
                   <div className="w-12 h-12 relative">
                     {jogadoresTransferidos[0]?.timeDestinoSigla && (
                       <Image
-                        src={`/assets/times/logos/${normalizeForFilePath(timeDestino)}.png`}
+                        src={ImageService.getTeamLogo(timeDestino)}
                         alt={`Logo ${timeDestino}`}
                         width={48}
                         height={48}
@@ -167,7 +167,7 @@ export default function MercadoPage() {
                             <div className="flex items-center">
                               <div className="w-6 h-6 relative">
                                 <Image
-                                  src={`/assets/times/logos/${normalizeForFilePath(transferencia.timeOrigemNome)}.png`}
+                                  src={ImageService.getTeamLogo(transferencia.timeOrigemNome)}
                                   alt={`Logo ${transferencia.timeOrigemNome}`}
                                   width={24}
                                   height={24}
@@ -180,13 +180,13 @@ export default function MercadoPage() {
                               </div>
                               <span className="ml-1">{transferencia.timeOrigemNome}</span>
                             </div>
-                            
+
                             <FontAwesomeIcon icon={faArrowRight} className="text-gray-500" />
-                            
+
                             <div className="flex items-center">
                               <div className="w-6 h-6 relative">
                                 <Image
-                                  src={`/assets/times/logos/${normalizeForFilePath(timeDestino)}.png`}
+                                  src={ImageService.getTeamLogo(timeDestino)}
                                   alt={`Logo ${timeDestino}`}
                                   width={24}
                                   height={24}

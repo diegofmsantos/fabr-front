@@ -1,8 +1,8 @@
 import React from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
-import { normalizeForFilePath } from '@/utils/services/FormatterService';
 import { TimeMercadoCardProps } from '@/types/time';
+import { TeamLogo } from '../Time/TeamImage';
+import { UrlService } from '@/utils/services/FormatterService';
 
 export const TimeMercadoCard: React.FC<TimeMercadoCardProps> = ({
   timeNome,
@@ -14,16 +14,7 @@ export const TimeMercadoCard: React.FC<TimeMercadoCardProps> = ({
     <div className="bg-white rounded-lg shadow-md overflow-hidden">
       <div className="p-4 border-b flex items-center gap-3">
         <div className="relative w-16 h-16">
-          <Image
-            src={`/assets/times/logos/${normalizeForFilePath(timeNome)}.png`}
-            alt={`Logo ${timeNome}`}
-            fill
-            className="object-contain"
-            onError={(e) => {
-              const target = e.target as HTMLImageElement;
-              target.src = '/assets/times/logos/default-logo.png';
-            }}
-          />
+          <TeamLogo teamName={timeNome} width={60} height={60} />
         </div>
         <div>
           <h3 className="text-xl font-extrabold italic tracking-tight">{timeNome}</h3>
@@ -92,10 +83,10 @@ export const TimeMercadoCard: React.FC<TimeMercadoCardProps> = ({
           </ul>
         </div>
       )}
-      
+
       <div className="p-3 bg-gray-50 border-t">
-        <Link 
-          href={`/${normalizeForFilePath(timeNome)}`}
+        <Link
+          href={UrlService.getTeamUrl(timeNome)}
           className="text-center block w-full text-sm font-bold text-gray-700 hover:text-[#63E300] transition-colors"
         >
           Ver detalhes do time

@@ -1,7 +1,6 @@
-import { Jogador } from "@/types/jogador"
-import { Time } from "@/types/time"
 import { statMappings } from "@/utils/constants/statMappings"
-import { formatValue, normalizeForFilePath } from "@/utils/services/FormatterService"
+import { formatValue } from "@/utils/services/FormatterService"
+import { ImageService, UrlService } from "@/utils/services/ImageService"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -25,19 +24,6 @@ interface RankingCardProps {
 
 export const RankingCard: React.FC<RankingCardProps> = ({ title, category, players, stat }) => {
 
- const getCamisaPath = (teamName: string, camisaNumber: string): string => {
-  if (!teamName || !camisaNumber) {
-    return '/assets/times/camisas/camisa-default.png';
-  }
-
-  const timeNormalizado = teamName.toLowerCase()
-    .replace(/\s+/g, '-')
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
-
-  return `/assets/times/camisas/${timeNormalizado}/${camisaNumber}`;
-}
-
   const getStatsUrl = (): string => {
     if (stat) {
       for (const [urlParam, mapping] of Object.entries(statMappings)) {
@@ -47,10 +33,8 @@ export const RankingCard: React.FC<RankingCardProps> = ({ title, category, playe
       }
     }
 
-    const categoryLower = category ? category.toLowerCase() : '';
-
-    const normalizedTitle = normalizeForFilePath(title);
-    return `/ranking/stats?stat=${categoryLower}-${normalizedTitle}`;
+    // Usa UrlService em vez de normalizeForFilePath bugada
+    return UrlService.getPlayerStatsUrl(category, title);
   }
 
   return (
@@ -58,7 +42,7 @@ export const RankingCard: React.FC<RankingCardProps> = ({ title, category, playe
       <h3 className="inline-block text-sm font-bold mb-2 bg-black text-white p-2 rounded-xl">{title}</h3>
       <ul className="flex flex-col text-white h-full">
         {players.map((player, index) => {
-          const teamLogoPath = player.teamLogo?.toLowerCase().replace(/\s/g, "-") || "/assets/times/logos/default-logo.png";
+          const teamLogoPath = player.teamLogo?.toLowerCase().replace(/\s/g, "-") || ImageService.getTeamLogo(player.team);
 
           return (
             <li
@@ -90,13 +74,14 @@ export const RankingCard: React.FC<RankingCardProps> = ({ title, category, playe
                     </div>
                     <div className="relative w-[200px] h-[200px]">
                       <Image
-                        src={getCamisaPath(player.team, player.camisa)}
+                        src={ImageService.getPlayerShirt(player.team, player.camisa)}
                         fill
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                         alt={`Camisa`}
                         className="object-contain"
                         priority
                         quality={100}
+                        onError={(e) => ImageService.handlePlayerShirtError(e, player.team, player.camisa)}
                       />
                     </div>
                   </div>

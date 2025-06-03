@@ -1,18 +1,17 @@
 import React from 'react';
-import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { Transferencia } from '@/types/time';
-import { normalizeForFilePath } from '@/utils/services/FormatterService';
+import { TeamLogo } from '../Time/TeamImage';
 
 interface TransferenciaCardProps {
   transferencia: Transferencia;
   destacado?: boolean;
 }
 
-export const TransferenciaCard: React.FC<TransferenciaCardProps> = ({ 
-  transferencia, 
-  destacado = false 
+export const TransferenciaCard: React.FC<TransferenciaCardProps> = ({
+  transferencia,
+  destacado = false
 }) => {
 
   const dataFormatada = new Date(transferencia.data).toLocaleDateString('pt-BR', {
@@ -22,32 +21,22 @@ export const TransferenciaCard: React.FC<TransferenciaCardProps> = ({
   });
 
   return (
-    <div 
-      className={`${
-        destacado 
-          ? 'bg-white shadow-md border-l-4 border-green-500' 
-          : 'bg-white shadow-sm'
-      } rounded-lg p-4 transition-all hover:shadow-lg`}
+    <div
+      className={`${destacado
+        ? 'bg-white shadow-md border-l-4 border-green-500'
+        : 'bg-white shadow-sm'
+        } rounded-lg p-4 transition-all hover:shadow-lg`}
     >
       <div className="mb-2 flex justify-between items-center">
         <h3 className="font-bold text-lg">{transferencia.jogadorNome}</h3>
         <span className="text-xs text-gray-500">{dataFormatada}</span>
       </div>
-      
+
       <div className="flex items-center justify-between mb-2">
         {transferencia.timeOrigemNome ? (
           <div className="flex items-center">
             <div className="relative w-10 h-10 mr-2">
-              <Image
-                src={`/assets/times/logos/${normalizeForFilePath(transferencia.timeOrigemNome)}.png`}
-                alt={transferencia.timeOrigemNome}
-                fill
-                className="object-contain"
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  target.src = '/assets/times/logos/default-logo.png';
-                }}
-              />
+              <TeamLogo teamName={transferencia.timeOrigemNome} width={60} height={60} />
             </div>
             <span className="text-sm font-medium">{transferencia.timeOrigemNome}</span>
           </div>
@@ -55,8 +44,8 @@ export const TransferenciaCard: React.FC<TransferenciaCardProps> = ({
           <div className="text-sm text-gray-500">Sem time anterior</div>
         )}
 
-        <FontAwesomeIcon 
-          icon={faArrowRight} 
+        <FontAwesomeIcon
+          icon={faArrowRight}
           className="mx-4 text-green-500"
           size="lg"
         />
@@ -64,16 +53,7 @@ export const TransferenciaCard: React.FC<TransferenciaCardProps> = ({
         {transferencia.timeDestinoNome && (
           <div className="flex items-center">
             <div className="relative w-10 h-10 mr-2">
-              <Image
-                src={`/assets/times/logos/${normalizeForFilePath(transferencia.timeDestinoNome)}.png`}
-                alt={transferencia.timeDestinoNome}
-                fill
-                className="object-contain"
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  target.src = '/assets/times/logos/default-logo.png';
-                }}
-              />
+              <TeamLogo teamName={transferencia.timeDestinoNome} width={60} height={60} />
             </div>
             <span className="text-sm font-medium">{transferencia.timeDestinoNome}</span>
           </div>

@@ -1,3 +1,4 @@
+// src/components/Stats/TeamStatsList.tsx
 import React from 'react'
 import Image from 'next/image'
 import { Jogador } from '@/types/jogador'
@@ -7,7 +8,8 @@ import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons'
 import { NoStats } from '../ui/NoStats'
-import { normalizeForFilePath, StatsFormatter } from '@/utils/services/FormatterService'
+import { formatValue, StatsFormatter } from '@/utils/services/FormatterService'
+import { ImageService } from '@/utils/services/ImageService'
 import { getCategoryFromKey } from '@/utils/helpers/categoryHelpers'
 
 interface TeamStatsListProps {
@@ -137,35 +139,7 @@ export const TeamStatsList: React.FC<TeamStatsListProps> = ({ players, times, st
       return b.value - a.value
     })
 
-  // Função para gerar paths das imagens
-  const getLogoPath = (teamName: string): string => {
-    // Normalização específica para logos - mantém hífens entre palavras
-    const normalizedName = teamName.toLowerCase()
-      .trim()
-      .replace(/\s+/g, '-') // Substitui espaços por hífens
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '') // Remove acentos
-      .replace(/[^a-z0-9-]/g, ''); // Remove caracteres especiais, mantém hífens
-    
-    const logoPath = `/assets/times/logos/${normalizedName}.png`;
-    
-    // Debug logs - remova depois de testar
-    console.log('Team Name:', teamName);
-    console.log('Normalized Name:', normalizedName);
-    console.log('Logo Path:', logoPath);
-    
-    return logoPath;
-  }
-
-  const getCapacetePath = (teamName: string, capacete?: string): string => {
-    if (capacete) {
-      return `/assets/times/capacetes/${capacete}`;
-    }
-    return `/assets/times/capacetes/${normalizeForFilePath(teamName)}.png`;
-  }
-
   const TeamListItem: React.FC<{ team: RankedTeam; index: number }> = ({ team, index }) => {
-
     return (
       <div className="bg-[#ECECEC] max-w-[1200px] mx-auto">
         <Link
@@ -193,32 +167,27 @@ export const TeamStatsList: React.FC<TeamStatsListProps> = ({ players, times, st
                     <h4 className="font-extrabold italic text-xl max-w-36 uppercase leading-4 md:text-[28px] md:leading-6">{team.time.nome}</h4>
                     <div className="flex items-center gap-1 ">
                       <Image
-                        src={getLogoPath(team.time.nome)}
+                        src={ImageService.getTeamLogo(team.time.nome)}
                         width={60}
                         height={60}
                         alt={`Logo do time ${team.time.nome}`}
-                        onError={(e) => {
-                          const target = e.currentTarget;
-                          if (target.src !== '/assets/times/logos/logo-default.png') {
-                            console.error('Erro ao carregar logo:', getLogoPath(team.time.nome));
-                            target.src = '/assets/times/logos/logo-default.png';
-                          }
-                        }}
+                        onError={(e) => ImageService.handleTeamLogoError(e, team.time.nome)}
                       />
                     </div>
                     <span className="font-extrabold italic text-[40px]">
-                      {StatsFormatter.format(team.value, statMapping)}
+                     {formatValue(team.value, statMapping.title)}
                     </span>
                   </div>
                   <div className="relative w-[200px] h-[200px]">
                     <Image
-                      src={getCapacetePath(team.time.nome, team.time.capacete)}
+                      src={ImageService.getTeamHelmet(team.time.nome, team.time.capacete)}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       alt={`Capacete do ${team.time.nome}`}
                       className="object-contain"
                       priority
                       quality={100}
+                      onError={(e) => ImageService.handleTeamHelmetError(e, team.time.nome)}
                     />
                   </div>
                 </div>
@@ -228,18 +197,12 @@ export const TeamStatsList: React.FC<TeamStatsListProps> = ({ players, times, st
                     <span className="font-bold flex items-center gap-2">
                       <div>{index + 1}</div>
                       <Image
-                        src={getLogoPath(team.time.nome)}
+                        src={ImageService.getTeamLogo(team.time.nome)}
                         width={40}
                         height={40}
                         alt={`Logo do time ${team.time.nome}`}
                         className='mr-4'
-                        onError={(e) => {
-                          const target = e.currentTarget;
-                          if (target.src !== '/assets/times/logos/logo-default.png') {
-                            console.error('Erro ao carregar logo (lista):', getLogoPath(team.time.nome));
-                            target.src = '/assets/times/logos/logo-default.png';
-                          }
-                        }}
+                        onError={(e) => ImageService.handleTeamLogoError(e, team.time.nome)}
                       />
                     </span>
                     <div className=" text-sm">
@@ -247,7 +210,7 @@ export const TeamStatsList: React.FC<TeamStatsListProps> = ({ players, times, st
                     </div>
                   </div>
                   <span className="font-bold text-lg">
-                    {StatsFormatter.format(team.value, statMapping)}
+                    {formatValue(team.value, statMapping.title)}
                   </span>
                 </div>
               )}

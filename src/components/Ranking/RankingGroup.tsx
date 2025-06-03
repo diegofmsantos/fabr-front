@@ -9,8 +9,8 @@ import 'slick-carousel/slick/slick-theme.css'
 import { NoStats } from '../ui/NoStats'
 import { calculateStat, compareValues, shouldIncludePlayer } from '@/utils/services/StatsServices'
 import { StatKey } from '@/types/Stats'
-import { normalizeForFilePath } from '@/utils/services/FormatterService'
 import { normalizeValue } from '@/utils/helpers/formatUrl'
+import { ImageService } from '@/utils/services/ImageService'
 
 interface RankingGroupProps {
   title: string;
@@ -130,7 +130,7 @@ export const RankingGroup: React.FC<RankingGroupProps> = ({ title, stats, player
                     value: normalizeValue(value, stat.key),
                     camisa: player.camisa,
                     teamColor: playerIndex === 0 ? teamInfo.cor : undefined,
-                    teamLogo: `/assets/times/logos/${normalizeForFilePath(teamInfo.nome)}.png`,
+                    teamLogo: ImageService.getTeamLogo(teamInfo.nome),
                     isFirst: playerIndex === 0,
                   }
                 })}

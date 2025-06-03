@@ -177,14 +177,14 @@ export default function TeamRankingPage() {
     return (
         <RankingLayout initialFilter="times">
             <div className="pb-12 bg-[#ECECEC] ">
-                <div className="px-6 xl:max-w-5xl xl:px-12 max-w-7xl mx-auto xl:ml-20">
+                <div className="px-6 max-w-7xl mx-auto xl:mt-10 xl:max-w-5xl xl:px-12 xl:ml-20">
                     <StatCategoryButtons
                         selectedCategory={selectedCategory}
                         onSelectCategory={setSelectedCategory}
                     />
                 </div>
 
-                <div className="px-4 lg:px-8 lg:mb-12 xl:px-12 mx-auto max-w-7xl ">
+                <div className="px-4 mx-auto max-w-7xl lg:px-8 lg:mb-12 xl:px-12">
                     <TeamStatCardsGrid
                         stats={preparedTeamStats}
                         category={categoryTitle}
